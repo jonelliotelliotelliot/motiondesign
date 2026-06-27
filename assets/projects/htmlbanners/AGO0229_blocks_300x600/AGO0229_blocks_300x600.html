@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://s0.2mdn.net/ads/studio/cached_libs/tweenmax_2.1.2_min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <meta name="ad.size" content="width=300,height=600">
+  <meta charset="UTF-8">
+  <style type="text/css">
+    #container {
+      border: 1px solid Black;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      background-color: White;
+      position: absolute;
+      width: 300px;
+      height: 600px;
+      overflow: hidden;
+      display: none;
+      -webkit-perspective: 1000px;
+      perspective: 1000px;
+    }
+    #clicktag {
+      width: 100%;
+      height: 100%;
+      z-index: 1500;
+      position: absolute;
+      display: block;
+      cursor: pointer;
+    }
+    body {
+      margin: 0px;
+    }
+    #blocks {
+      width: 252px;
+      margin: 0 auto;
+      position: relative;
+      top: 20px;
+      left: 4px;
+    }
+    .block,
+    .block2 {
+      width: 30px;
+      height: 42px;
+      padding-right: 1px;
+      padding-bottom: 1px;
+      position: relative;
+      float: left;
+    }
+    .block img,
+    .block2 img {
+      width: 100%;
+      height: 100%;
+    }
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+    #cta img {
+      width: 300px;
+      height: 250px;
+    }
+    #cta {
+      position: absolute;
+      top: 200px;
+    }
+    #logo img {
+      width: 70px;
+    }
+    #logo {
+      bottom: 4px;
+      right: 10px;
+      position: absolute;
+    }
+    #sponsor img {
+      width: 82px;
+    }
+    #sponsor {
+      bottom: 4px;
+      left: 8px;
+      position: absolute;
+    }
+    #play {
+      width: 300px;
+      height: 600px;
+      background-color: black;
+      position: absolute;
+      cursor: pointer;
+      background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url("backup.jpg");
+    }
+    #playbutton {
+      width: 40px;
+      height: 40px;
+      background-color: white;
+      border-radius: 30px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    #playbutton i {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    #btn i {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    #btn {
+      position: absolute;
+      z-index: 500;
+      width: 30px;
+      height: 30px;
+      background-color: #e7e7e7;
+      border-radius: 20px;
+      right: 15px;
+      top: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="cta"><img src="cta.svg" /></div>
+    <div id="logo"><img src="logo.svg" /></div>
+    <div id="sponsor"><img src="sponsor.svg" /></div>
+    <div id="blocks">
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block2"> <svg xmlns="http://www.w3.org/2000/svg" width="43" height="60" viewBox="0 0 43 60">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #231f20;
+                fill-rule: evenodd;
+              }
+            </style>
+          </defs>
+          <title>3</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="_3" data-name="3">
+              <polygon class="cls-1"
+                points="43 23.92 36.97 30 43 35.92 43 46.8 29.9 60 0 60 0 47.44 6.27 41.44 0 35.2 0 24.4 6.27 18.56 0 12.32 0 0 29.9 0 43 13.04 43 23.92" />
+            </g>
+          </g>
+        </svg></div>
+      <div class="block2"> <svg xmlns="http://www.w3.org/2000/svg" width="43" height="60" viewBox="0 0 43 60">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #231f20;
+                fill-rule: evenodd;
+              }
+            </style>
+          </defs>
+          <title>6</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="_6" data-name="6">
+              <polygon class="cls-1"
+                points="43 24.48 43 46.96 29.66 60 13.18 60 0 46.96 0 13.04 13.18 0 43 0 43 12.4 36.73 18.48 43 24.48" />
+            </g>
+          </g>
+        </svg></div>
+      <div class="block2"> <svg xmlns="http://www.w3.org/2000/svg" width="43" height="60" viewBox="0 0 43 60">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #231f20;
+                fill-rule: evenodd;
+              }
+            </style>
+          </defs>
+          <title>5</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="_5" data-name="5">
+              <polygon class="cls-1"
+                points="0 29.36 0 0 43 0 43 12.4 36.96 18.48 43 24.48 43 46.96 29.88 60 0 60 0 41.44 6.04 35.36 0 29.36" />
+            </g>
+          </g>
+        </svg></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block2"> <img src="D.svg" /></div>
+      <div class="block2"> <img src="A.svg" /></div>
+      <div class="block2"> <img src="Y.svg" /></div>
+      <div class="block2"> <img src="S.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block2"> <img src="O.svg" /></div>
+      <div class="block2"> <img src="F.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block2"> <svg xmlns="http://www.w3.org/2000/svg" width="43" height="60" viewBox="0 0 43 60">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #231f20;
+                fill-rule: evenodd;
+              }
+            </style>
+          </defs>
+          <title>A</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="A">
+              <polygon class="cls-1"
+                points="43 13.18 43 60 27.55 60 21.42 53.85 15.61 60 0 60 0 13.18 13.06 0 29.86 0 43 13.18" />
+            </g>
+          </g>
+        </svg></div>
+      <div class="block2"> <svg xmlns="http://www.w3.org/2000/svg" width="43" height="60" viewBox="0 0 43 60">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #231f20;
+                fill-rule: evenodd;
+              }
+            </style>
+          </defs>
+          <title>R</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="R">
+              <polygon class="cls-1" points="43 60 0 60 0 0 29.82 0 43 13.2 43 32.56 34.19 41.52 43 60" />
+            </g>
+          </g>
+        </svg></div>
+      <div class="block2"> <svg xmlns="http://www.w3.org/2000/svg" width="43" height="60" viewBox="0 0 43 60">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #231f20;
+                fill-rule: evenodd;
+              }
+            </style>
+          </defs>
+          <title>T</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="T">
+              <polygon class="cls-1"
+                points="6.09 60 6.09 18.43 0 12.42 0 0 43 0 43 12.42 36.84 18.43 36.84 60 6.09 60" />
+            </g>
+          </g>
+        </svg></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block2"> <img src="F.svg" /></div>
+      <div class="block2"> <img src="O.svg" /></div>
+      <div class="block2"> <img src="R.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block2"> <svg xmlns="http://www.w3.org/2000/svg" width="43" height="60" viewBox="0 0 43 60">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #231f20;
+                fill-rule: evenodd;
+              }
+            </style>
+          </defs>
+          <title>DOLLAR</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="dollar">
+              <path class="cls-1"
+                d="M21.53,56.26,17.2,60l-4.33-3.74H0V46.5l6.12-5.61L0,35.34v-21L13.29,3.94h8.45L25.8,0l4.07,3.94H43v9.76L36.72,19.4,43,25V46L29.71,56.26Z" />
+            </g>
+          </g>
+        </svg></div>
+      <div class="block2"> <svg xmlns="http://www.w3.org/2000/svg" width="43" height="60" viewBox="0 0 43 60">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #231f20;
+                fill-rule: evenodd;
+              }
+            </style>
+          </defs>
+          <title>3</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="_3" data-name="3">
+              <polygon class="cls-1"
+                points="43 23.92 36.97 30 43 35.92 43 46.8 29.9 60 0 60 0 47.44 6.27 41.44 0 35.2 0 24.4 6.27 18.56 0 12.32 0 0 29.9 0 43 13.04 43 23.92" />
+            </g>
+          </g>
+        </svg></div>
+      <div class="block2"> <svg xmlns="http://www.w3.org/2000/svg" width="43" height="60" viewBox="0 0 43 60">
+          <defs>
+            <style>
+              .cls-1 {
+                fill: #231f20;
+                fill-rule: evenodd;
+              }
+            </style>
+          </defs>
+          <title>5</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="_5" data-name="5">
+              <polygon class="cls-1"
+                points="0 29.36 0 0 43 0 43 12.4 36.96 18.48 43 24.48 43 46.96 29.88 60 0 60 0 41.44 6.04 35.36 0 29.36" />
+            </g>
+          </g>
+        </svg></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+      <div class="block"> <img src="G.svg" /></div>
+      <div class="block"> <img src="O.svg" /></div>
+      <div class="block"> <img src="A.svg" /></div>
+    </div>
+    <div id="btn"><i class="fa-solid fa-rotate"></i></div>
+  </div>
+  <div id="play">
+    <div id="playbutton"><i class="fa-solid fa-circle-play fa-2xl"></i></div>
+  </div>
+  <script type="text/javascript">
+    var clickTag = "http://www.google.com";
+    document.getElementById("play").onclick = function () {
+      document.getElementById("container").style.display = "block";
+      document.getElementById("play").style.display = "none";
+      // window.onload = function () {
+      // document.getElementById("container").style.display = "block";
+      var allblocks = $('.block, .block2').toArray();
+      allblocks.sort(function () { return 0.5 - Math.random() });
+      var ctablocks = $('.block').toArray();
+      ctablocks.sort(function () { return 0.5 - Math.random() });
+      var mainTimeline = new TimelineMax();
+      mainTimeline
+        .staggerFrom(allblocks, 0.5, { y: -100, opacity: 0, ease: Back.easeOut }, 0.01, "in")
+        .staggerTo(ctablocks, 0.6, { scale: 0, ease: Power2.easeInOut }, 0.03, "out+=0.6")
+        .to(".cls-1", 1, { fill: "#f51414" }, "out+=1.2")
+        .from("#btn", 1, { ease: Power2.easeInOut, scale: 0, rotation: -360 }, "-=0.5")
+      document.getElementById("btn").onclick = function () {
+        mainTimeline.restart();
+      }
+        ;
+    };
+  </script>
+</body>
+</html>

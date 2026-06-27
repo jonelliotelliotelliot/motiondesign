@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="600" viewBox="0 0 300 600">
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="background">
+      <rect width="300" height="600" style="fill: none"/>
+    </g>
+    <g id="outline">
+      <path d="M0,0V600H300V0ZM290.625,590.625H9.375V9.375h281.25Z" style="fill: #1a3966"/>
+    </g>
+  </g>
+</svg>

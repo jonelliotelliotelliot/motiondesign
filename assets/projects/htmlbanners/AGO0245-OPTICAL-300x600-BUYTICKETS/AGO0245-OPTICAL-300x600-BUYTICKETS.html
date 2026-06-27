@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://s0.2mdn.net/ads/studio/cached_libs/tweenmax_2.1.2_min.js"></script>
+<meta name="ad.size" content="width=300,height=600">
+<meta charset="UTF-8">
+<style type="text/css">
+* { box-sizing: border-box; }
+body {
+	margin: 0px;
+}
+:root {
+ 	--scenePerspective: 500;
+    --perspectiveOriginX:50;
+  	--perspectiveOriginY: 50;
+}
+#red {
+	width:100%;
+	height:100%;
+	/*background: rgb(176,26,1);
+	background: linear-gradient(-30deg, rgba(176,26,1,1) 0%, rgba(244,36,0,1) 100%);*/
+	position: absolute;
+	background-image: url("background.jpg");
+	background-size: 300px 600px;
+	background-repeat: no-repeat;
+}
+#cta, #cta div, #sponsors {
+	width:100%;
+	height:100%;
+	position: absolute;
+}
+#endframe img {
+	width: 100%;
+	height:100%;
+}
+#sponsors {
+	top:500px;
+	left:18px;
+}
+#sponsors img {
+}
+#container {
+	width:300px;
+	height:600px;
+	overflow: hidden;
+	position: absolute;
+	background: rgb(176,26,1);
+	background: linear-gradient(-30deg, rgba(176,26,1,1) 0%, rgba(244,36,0,1) 100%);
+	display: none;
+}
+#ringscontainer,#wordscontainer {
+	width: 300px;
+	height: 300px;
+	perspective: calc(var(--scenePerspective) * 1px);
+	perspective-origin: calc(var(--perspectiveOriginX) * 1%) calc(var(--perspectiveOriginY) * 1%);
+	top:150px;
+	position: absolute;
+}
+.rings,.words {
+    width: 300px;
+  	height: 300px;
+  	position: relative;
+	transform-style: preserve-3d;
+}
+.ring img, .word img {
+	width:100%;
+	height:100%;
+}
+.ring, .word {
+	position: absolute;
+	transform-style: preserve-3d;
+	width: 100%;
+	height: 100%;
+	/*background-color: rgba(12,12,12,0.4)*/
+}
+     #you {transform:  translateZ(-300px);}
+     #will {transform:  translateZ(-1100px);left:-5px;}
+     #go {transform:  translateZ(-2100px);}
+     #to {transform:  translateZ(-2900px);left:10px;}
+     #the {transform:  translateZ(-3700px);top:20px;}
+     #ago {transform:  translateZ(-4800px);top:15px;}
+     #youwontmiss {transform:  translateZ(-8200px);}
+#clicktag {
+        width: 100%;
+        height: 100%;
+        z-index: 300;
+        position: absolute;
+        display: block;
+        cursor: pointer;
+      }
+#play {
+	width: 300px;
+	height: 600px;
+	background-color: black;
+	position: absolute;
+	cursor: pointer;
+	background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url("backup.jpg");
+}
+#playbutton {
+	width: 40px;
+	height: 40px;
+	background-color: white;
+	border-radius: 30px;
+	position: absolute;
+	  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+#playbutton i {
+	position: absolute;
+	  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+#btn i {
+		position: absolute;
+	  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+#btn {
+	position: absolute;
+	z-index: 500;
+	width: 30px;
+	height: 30px;
+	background-color: white;
+	border-radius: 20px;
+	left: 15px;
+	bottom: 15px;
+	cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div id="container">
+	<div id="ringscontainer">
+		<div id="rings" class="rings">
+		</div>
+	</div>
+	<div id="wordscontainer">
+		<div id="words" class="words">
+		<div class="word" id="you"><img src="you.svg"/></div>
+		<div class="word" id="will"><img src="will.svg"/></div>
+		<div class="word" id="go"><img src="go.svg"/></div>
+		<div class="word" id="to"><img src="to.svg"/></div>
+		<div class="word" id="the"><img src="the.svg"/></div>
+		<div class="word" id="ago"><img src="ago.svg"/></div>
+		<div class="word" id="youwontmiss"><img src="youwontmiss.svg"/></div>
+		</div>
+	</div>
+	<div id="red"></div>
+	<div id="cta">
+		<div id="endframe"><img src="endframe.svg"/></div>
+		<!-- <div id="sponsors"><img src="sponsors.png"/></div> -->
+	</div>
+	<div id="clicktag"></div>
+	<div id="btn"><i class="fa-solid fa-rotate"></i></div>
+</div>
+<div id="play">
+	<div id="playbutton"><i class="fa-solid fa-circle-play fa-2xl"></i></div>
+</div>
+<script type="text/javascript">
+function addElement (i) {
+  var newDiv = document.createElement("div");
+  var img = document.createElement("IMG");
+  img.setAttribute("src", "ring.png");
+  newDiv.appendChild(img);
+  newDiv.className = "ring";
+  newDiv.setAttribute ("style","transform: translateZ("+i+"px)");
+  var currentDiv = document.getElementById("ring");
+  document.getElementById("rings").insertBefore(newDiv, currentDiv);
+}
+for (var i = 0 ; i >= -4000 ; i -= 100){
+addElement(i);
+}
+var clickTag = "http://www.google.com";
+document.getElementById("play").onclick = function() {
+document.getElementById("container").style.display = "block";
+document.getElementById("play").style.display = "none";
+var mainTimeline = new TimelineMax();
+  mainTimeline
+//.to ("#rings",10,{ease:ExpoScaleEase.easeNone,z:6000,force3D:false},"zoom")
+.set ("#rings",{z:500})
+.to ("#rings",20,{ease:Linear.easeNone,z:8000,force3D:false},"zoom")
+.to ("#words",10,{ease:Linear.easeNone,z:7000,force3D:false},"zoom")
+.to (".ring",20,{ease:Linear.easeNone,rotation:360,force3D:false},"zoom")
+.from ("#will",1,{opacity:0},"zoom+=0.5")
+.from ("#go",1,{opacity:0},"zoom+=1.5")
+.from ("#to",1,{opacity:0},"zoom+=2.8")
+.from ("#the",1,{opacity:0},"zoom+=4.0")
+.from ("#ago",1,{opacity:0},"zoom+=5.0")
+.from ("#youwontmiss",0.5,{opacity:0},"zoom+=6.5")
+.fromTo ("#youwontmiss",4,{scale:0.8},{ease:Power2.easeInOut,scale:1.4,force3D:false},"zoom+=6.5")
+.from ("#red",1,{opacity:0},"zoom+=9")
+.from ("#cta",2,{ease:Power2.easeInOut,scale:0.6,opacity:0,force3D:false},"zoom+=9.2")
+.from ("#btn",1,{ease:Power2.easeInOut,scale:0,rotate:-360},"zoom+=9.5")
+document.getElementById("btn").onclick = function() {
+     mainTimeline.restart();
+}
+;
+//mainTimeline.seek ("zoom+=10")
+};
+document.getElementById("clicktag").onclick = function() {
+    window.open(window.clickTag)
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script
+        src="https://s0.2mdn.net/ads/studio/cached_libs/tweenmax_1.19.1_92cf05aba6ca4ea5cbc62b5a7cb924e3_min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="ad.size" content="width=300,height=250">
+    <meta charset="UTF-8">
+    <style type="text/css">
+        #container {
+            border: 1px solid #c0c0c0;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            background-color: White;
+            position: absolute;
+            width: 300px;
+            height: 250px;
+            overflow: hidden;
+            display: none;
+            perspective: 500px;
+        }
+        #clicktag {
+            width: 300px;
+            height: 250px;
+            z-index: 300;
+            position: absolute;
+            display: block;
+            cursor: pointer;
+        }
+        #parkedcars {
+            position: absolute;
+        }
+        body {
+            margin: 0px;
+            -webkit-text-size-adjust: none;
+        }
+        #car1,
+        #car2 {
+            position: absolute;
+            z-index: 3;
+        }
+        #car1 {
+            top: 152px;
+            left: 102px;
+            transform: rotate(40deg);
+            width: 40px;
+            height: 91px;
+        }
+        #car2 {
+            top: 160px;
+            left: 162px;
+            transform: rotate(-40deg);
+        }
+        #car1nodamage {
+            position: absolute;
+            z-index: 3;
+        }
+        #car1damage {
+            position: absolute;
+            z-index: 2;
+            display: none;
+        }
+        #bubble {
+            background-image: url("bubble.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            width: 227px;
+            height: 181px;
+            position: absolute;
+            z-index: 5;
+            font-family: Helvetica;
+            font-weight: Bold;
+            color: White;
+            font-size: 40px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            top: 10px;
+            left: 50px;
+        }
+        .bubbletext {
+            position: relative;
+            float: left;
+            text-align: center;
+        }
+        #bubbletextcontainer {
+            position: absolute;
+            top: 25%;
+            left: 7%;
+        }
+        #fixauto {
+            position: absolute;
+            top: 25%;
+            left: 12%;
+        }
+        #endbackground {
+            position: absolute;
+            z-index: 100;
+        }
+        #logo {
+            position: absolute;
+            z-index: 101;
+            left: 50%;
+            transform: translatex(-50%);
+            top: 17%;
+        }
+        #endtext1,
+        #endtext2 {
+            font-family: Helvetica;
+            font-weight: Bold;
+            color: #151f3f;
+            font-size: 16px;
+            position: absolute;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            z-index: 102;
+            text-align: center;
+            top: 160px;
+            width: 300px;
+        }
+        #endtext2 {
+            top: 145px;
+        }
+        #button {
+            position: absolute;
+            background-color: #d71b54;
+            width: 100px;
+            height: 25px;
+            border-radius: 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            z-index: 105;
+            left: 50%;
+            transform: translatex(-50%);
+            bottom: 10%;
+        }
+        #btncopy {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+            font-size: 12px;
+            font-family: Helvetica;
+            font-weight: Bold;
+            color: White;
+        }
+        #play {
+            width: 300px;
+            height: 250px;
+            background-color: black;
+            position: absolute;
+            cursor: pointer;
+            background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url("backup.jpg");
+        }
+        #playbutton {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 30px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        #playbutton i {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        #btn i {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        #btn {
+            position: absolute;
+            z-index: 1500;
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border-radius: 20px;
+            right: 15px;
+            top: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="btn"><i class="fa-solid fa-rotate"></i></div>
+        <div id="button">
+            <div id="btncopy">LEARN MORE</div>
+        </div>
+        <div id="endtext2"> Visit FixAuto.com for<br />a no-obligation estimate.</div>
+        <div id="endtext1"> The first words that should come <br />to mind after an accident.</div>
+        <div id="logo"><img src="logo.jpg" /> </div>
+        <div id="endbackground"> <img src="background.jpg" /> </div>
+        <div id="bubble">
+            <div id="bubbletextcontainer">
+                <div class="bubbletext">O</div>
+                <div class="bubbletext">H</div>
+                <div class="bubbletext">&nbsp;</div>
+                <div class="bubbletext">F</div>
+                <div class="bubbletext">F</div>
+                <div class="bubbletext">F</div>
+                <div class="bubbletext">F</div>
+                <div class="bubbletext">F</div>
+            </div>
+            <div id="fixauto"> Fix Auto! </div>
+        </div>
+        <div id="car1">
+            <div id="car1nodamage"><img src="car1.png" /></div>
+            <div id="car1damage"><img src="car1-damage.png" /></div>
+        </div>
+        <div id="car2"><img src="car2.png" /> </div>
+        <div id="parkedcars"><img src="parkedcars.jpg" /></div>
+    </div>
+    <div id="play">
+        <div id="playbutton"><i class="fa-solid fa-circle-play fa-2xl"></i></div>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("play").onclick = function () {
+            document.getElementById("container").style.display = "block";
+            document.getElementById("play").style.display = "none";
+            document.getElementById("container").style.display = "block";
+            var mainTimeline = new TimelineMax();
+            mainTimeline
+                .from("#car1", 3, { ease: Power2.easeInOut, x: -92, y: 102, rotation: 60 }, "crash+=0.5")
+                .from("#car2", 1.5, { ease: Power2.easeIn, x: 82, y: 82, rotation: -60 }, "crash+=1.3")
+                .to("#car1", 0.4, { ease: Bounce.easeOut, rotation: 30 }, "ding-=0.75")
+                .set("#car1nodamage", { display: "none" }, "ding-=0.7")
+                .set("#car1damage", { display: "block" }, "ding-=0.7")
+                .to("#car2", 0.2, { ease: Bounce.easeOut, x: -2, y: -2 }, "ding-=0.5")
+                .from("#bubble", 0.8, { ease: Back.easeOut.config(2.7), rotationY: -90, opacity: 0 }, "flip-=0.1")
+                .staggerFrom(".bubbletext", 0.5, { opacity: 0, scale: 0, y: 40, ease: Back.easeInOut }, 0.1, "flip-=0.1")
+                .to("#bubbletextcontainer", 0.4, { ease: Back.easeIn.config(2.7), y: -40, opacity: 0, display: "none" }, "+=0.5")
+                .from("#fixauto", 0.4, { ease: Back.easeOut.config(2.7), y: 40, opacity: 0, display: "none" })
+                .from("#endbackground", 0.6, { ease: Power2.easeInOut, scale: 4, opacity: 0 }, "endframe+=1")
+                .from("#logo", 1.2, { ease: Back.easeInOut.config(1.8), y: 40, opacity: 0 })
+                .from("#endtext1", 1.2, { ease: Back.easeInOut.config(1.8), y: 40, opacity: 0 }, "-=0.8")
+                .to("#logo", 1, { ease: Power2.easeInOut, y: -20 }, "endframepart2+=2")
+                .to("#endtext1", 0.5, { opacity: 0 }, "endframepart2+=2")
+                .from("#endtext2", 1.2, { ease: Back.easeInOut.config(1.8), y: 40, opacity: 0 }, "-=0.8")
+                .from("#button", 1.2, { ease: Back.easeInOut.config(1.8), y: 40, opacity: 0 }, "-=0.8")
+                .from("#btn", 1, { ease: Power2.easeInOut, scale: 0, rotation: -360 }, "-=0.5")
+                ;
+            document.getElementById("btn").onclick = function () {
+                mainTimeline.restart();
+            }
+            //mainTimeline.seek("endframe")
+        }
+        document.getElementById("clicktag").onmouseover = function () {
+            TweenMax.to("#button", 0.5, { backgroundColor: "#002c55" })
+        }
+        document.getElementById("clicktag").onmouseout = function () {
+            TweenMax.to("#button", 0.5, { backgroundColor: "#d71b54" })
+        }
+        document.getElementById("clicktag").onclick = function () {
+            window.open('https://fixauto.com/ca-on/en/shop-locator?utm_source=Oath&utm_campaign=Fix%20Auto%20Retargeting', '_blank');
+        };
+    </script>
+</body>
+</html>

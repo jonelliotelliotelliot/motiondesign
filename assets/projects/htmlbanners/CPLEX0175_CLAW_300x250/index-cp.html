@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <script src="https://s0.2mdn.net/ads/studio/cached_libs/tweenmax_1.19.1_92cf05aba6ca4ea5cbc62b5a7cb924e3_min.js"></script>
+  <!--   <script type="text/javascript" src="https://tpc.googlesyndication.com/pagead/gadgets/html5/api/exitapi.js"></script>
+    <script type="text/javascript" src="https://quickresource.eyereturn.com/eyebuild/eyebuild_1_19.js"></script> -->
+    <meta name="ad.size" content="width=300,height=250">
+    <meta charset="UTF-8">
+    <style type="text/css">
+     body {
+     margin: 0px;
+}
+ #container {
+     border: 1px solid Black;
+     box-sizing:border-box;
+     -moz-box-sizing:border-box;
+     -webkit-box-sizing:border-box;
+     background-color: White;
+     position: absolute;
+     width: 300px;
+     height:250px;
+     overflow: hidden;
+     perspective: 500px;
+     display: none;
+}
+ #claw {
+     position: absolute;
+     top:-160px;
+}
+ #claw div {
+     position: absolute;
+}
+ #crane img {
+     width:80px;
+}
+ #grab {
+     position: absolute;
+     width:61px;
+     height:44px;
+     background-image:url("https://jonelliot.ca/banners/RECROOM/grabbtn.png");
+     bottom:-73px;
+     left:120px;
+     z-index: 201;
+     cursor: pointer;
+}
+ #stuff {
+     position: absolute;
+     z-index: 0;
+}
+ #stuff img {
+     width:300px;
+     height:250px;
+}
+ .object {
+     top:211px;
+     left:16px;
+     display: none;
+     position: absolute;
+     width:70px;
+     height:72px;
+     background-image: url('');
+     z-index: 21;
+     opacity: 0;
+}
+ #winner {
+     width:150px;
+     height:40px;
+     background-color: Black;
+     font-family: Helvetica;
+     font-weight: Regular;
+     color: White;
+     font-size: 20px;
+     text-align: center;
+     padding-top:18px;
+     position: absolute;
+     z-index: 400;
+     border-radius: 10px;
+     letter-spacing: 2px;
+     left:80px;
+     top:85px;
+     border: 4px solid;
+     border-color: White;
+     box-shadow: 5px 10px #888888;
+     -webkit-box-shadow: 0px 6px 17px 0px rgba(0,0,0,0.43);
+     -moz-box-shadow: 0px 6px 17px 0px rgba(0,0,0,0.43);
+     box-shadow: 0px 6px 17px 0px rgba(0,0,0,0.43);
+     display: none;
+}
+ .clawcontainer {
+     position: absolute;
+     z-index: 20;
+     top:-130px;
+     opacity: 1;
+}
+ .clawparts {
+     position: absolute;
+     z-index: 20;
+     transform-origin: 50px 155px;
+     -moz-transform-origin: 50px 155px;
+     -webkit-transform-origin: 50px 155px;
+     -ms-transform-origin: 50px 155px;
+     width: 100px;
+     height: 250px;
+}
+ #originguide {
+     position: absolute;
+     width:2px;
+     height:2px;
+     background-color: White;
+     top:155px;
+     left:50px;
+     z-index: 300;
+     display: none;
+}
+ .clawopen, #clawopen {
+     width: 100px;
+     height: 250px;
+     position: absolute;
+     z-index: 20;
+     background: url('https://jonelliot.ca/banners/RECROOM/claw-sequence.png') left center;
+     animation: clawopen .6s steps(18) forwards;
+     -moz-animation: clawopen .6s steps(18) forwards;
+     -webkit-animation: clawopen .6s steps(18) forwards;
+     -ms-animation: clawopen .6s steps(18) forwards;
+     display: block;
+}
+ .clawclose {
+     width: 100px;
+     height: 250px;
+     position: absolute;
+     z-index: 20;
+     background: url('https://jonelliot.ca/banners/RECROOM/claw-sequence.png') left center;
+     animation: clawclose .6s steps(18) reverse;
+     -webkit-animation: clawclose .6s steps(18) reverse;
+     -moz-animation: clawclose .6s steps(18) reverse;
+     -ms-animation: clawclose .6s steps(18) reverse;
+     display: none;
+}
+ .bits {
+     position: absolute;
+     z-index: 21;
+     top:130px;
+}
+ .clawclosed {
+     position: absolute;
+     z-index: 20;
+}
+ @-moz-keyframes clawopen {
+     100% {
+         background-position: -1800px;
+    }
+}
+ @-moz-keyframes clawclose {
+     100% {
+         background-position: -1800px;
+    }
+}
+ @keyframes clawopen {
+     100% {
+         background-position: -1800px;
+    }
+}
+ @keyframes clawclose {
+     100% {
+         background-position: -1800px;
+    }
+}
+ #border {
+     position: absolute;
+     z-index: 200;
+     pointer-events:none;
+}
+ #glare {
+     position: absolute;
+     z-index: 198;
+     pointer-events:none;
+}
+ #toys {
+     position: absolute;
+     z-index: 21;
+}
+ #background {
+     position: absolute;
+     z-index: 19;
+}
+ #clawreflectioncontainer {
+     position: absolute;
+     top:-10px;
+     left:-15px;
+}
+ #clawreflection {
+     opacity: 0.1;
+}
+ #dropzones {
+     width:300px;
+     height:250px;
+     position: absolute;
+     z-index: 300;
+     opacity: 0.2;
+}
+ #drop1,#drop2,#drop3 {
+     width:100px;
+     height:250px;
+     position: relative;
+     float:left;
+}
+ #drop1 {
+     background-color: Yellow;
+}
+ #drop2 {
+     background-color: Magenta;
+}
+ #drop3 {
+     background-color: Blue;
+}
+ #toyscontainer {
+     position: absolute;
+     z-index: 22;
+     width:300px;
+     height:250px;
+     display: block;
+     top:10px;
+}
+ #toyscontainer div {
+     position: absolute;
+}
+ #burger {
+     top:188px;
+     left:56px;
+}
+ #controller {
+     top:208px;
+     left:142px;
+}
+ #bear {
+     top:170px;
+     left:246px;
+}
+ #basketball {
+     top:170px;
+     left:-15px;
+}
+ #drink {
+     top:145px;
+     left:140px;
+}
+ #donut {
+     top:160px;
+     left:182px;
+}
+ #mic {
+     top:153px;
+     left:102px;
+}
+ #wheel {
+     top:178px;
+     left:98px;
+}
+ #eightball {
+     top:185px;
+     left:204px;
+}
+ #logo {
+     top:187px;
+     left:160px;
+}
+ #arcade {
+     left:227px;
+     top:139px;
+}
+ #pingpong {
+     top:153px;
+     left:50px;
+}
+ #startbutton {
+     width:124px;
+     height:33px;
+     background-image:url("https://jonelliot.ca/banners/RECROOM/startbtn.png");
+}
+ #intro {
+     position: absolute;
+     z-index: 300;
+     width:300px;
+     height:250px;
+     background-color:rgba(0, 0, 0, 0.7);
+}
+ #intro div {
+     position: relative;
+     text-align: center;
+     margin: 0 auto;
+}
+ #introtext {
+     padding-top:70px;
+     padding-bottom:20px;
+     transform-origin: 50% 60%;
+     -moz-transform-origin: 50% 60%;
+     -webkit-transform-origin: 50% 60%;
+     -ms-transform-origin: 50% 60%;
+}
+ #startbutton {
+     cursor: pointer;
+}
+ #zoom {
+     z-index: 400;
+     width: 300px;
+     height: 250px;
+     position: absolute;
+     background: url('https://jonelliot.ca/banners/RECROOM/zoomoutblack.png') left center;
+     animation: zoomoutblack 1.7s steps(49) forwards;
+     -webkit-animation: zoomoutblack 1.7s steps(49) forwards;
+     -moz-animation: zoomoutblack 1.7s steps(49) forwards;
+     -ms-animation: zoomoutblack 1.7s steps(49) forwards;
+     display: block;
+     backface-visibility: hidden;
+}
+ @-moz-keyframes zoomoutblack {
+     100% {
+         background-position: -14700px;
+    }
+}
+ @keyframes zoomoutblack {
+     100% {
+         background-position: -14700px;
+    }
+}
+ #endframe {
+     position: absolute;
+     z-index: 401;
+     display: none;
+}
+ #discoverfun {
+     position: absolute;
+     width:124px;
+     height:33px;
+     top:153px;
+     left:88px;
+     z-index: 402;
+     background-image: url("https://jonelliot.ca/banners/RECROOM/discoverfun.png");
+     cursor: pointer;
+}
+ #load {
+     position: absolute;
+     width:300px;
+     height:250px;
+     background-color: Black;
+     z-index: 600;
+}
+ #loader {
+     position: relative;
+     width:40px;
+     height:40px;
+     top:50%;
+     left:50%;
+     transform: translateX(-50%) translatey(-50%);
+     -webkit-transform: translateX(-50%) translatey(-50%);
+     -moz-transform: translateX(-50%) translatey(-50%);
+     -ms-transform: translateX(-50%) translatey(-50%);
+}
+ #preload {
+     display: none;
+}
+
+    </style>
+</head>
+
+<body>
+    <div id="preload"> <img src="https://jonelliot.ca/banners/RECROOM/startbtnclicked.png" /> <img src="https://jonelliot.ca/banners/RECROOM/grabbtnclicked.png" /></div>
+    <div id="load">
+        <div id="loader"><img src="https://jonelliot.ca/banners/RECROOM/load.png" /></div>
+    </div>
+    <div id="container">
+        <div id="endframe">
+            <div id="discoverfun"> </div>
+            <div id="endframebackground"><img src="https://jonelliot.ca/banners/RECROOM/endframe.png" /></div>
+        </div>
+        <div id="zoom"> </div>
+
+        <div id="border"> <img src="https://jonelliot.ca/banners/RECROOM/border.png" /></div>
+        <div id="glare"> <img src="https://jonelliot.ca/banners/RECROOM/glare.png" /> </div>
+        <div id="intro">
+            <div id="introtext"><img src="https://jonelliot.ca/banners/RECROOM/intro-title.png" /> </div>
+            <div id="startbutton"></div>
+        </div>
+
+        <div id="toyscontainer">
+
+            <div id="pingpong"><img src="https://jonelliot.ca/banners/RECROOM/pingpong.png" /> </div>
+            <div id="arcade"><img src="https://jonelliot.ca/banners/RECROOM/arcade.png" /> </div>
+            <div id="logo"><img src="https://jonelliot.ca/banners/RECROOM/logo.png" /> </div>
+            <div id="eightball"><img src="https://jonelliot.ca/banners/RECROOM/8ball.png" /> </div>
+            <div id="wheel"><img src="https://jonelliot.ca/banners/RECROOM/wheel.png" /> </div>
+            <div id="mic"><img src="https://jonelliot.ca/banners/RECROOM/mic.png" /> </div>
+            <div id="donut"><img src="https://jonelliot.ca/banners/RECROOM/donut.png" /> </div>
+            <div id="drink"><img src="https://jonelliot.ca/banners/RECROOM/drink.png" /> </div>
+            <div id="basketball"><img src="https://jonelliot.ca/banners/RECROOM/basketball.png" /> </div>
+            <div id="bear"><img src="https://jonelliot.ca/banners/RECROOM/bear.png" /> </div>
+            <div id="burger"><img src="https://jonelliot.ca/banners/RECROOM/burger.png" /> </div>
+            <div id="controller"><img src="https://jonelliot.ca/banners/RECROOM/controller.png" /> </div>
+        </div>
+
+        <div id="clawcontainer" class="clawcontainer">
+            <div class="bits"><img src="https://jonelliot.ca/banners/RECROOM/bits.png" /></div>
+            <div class="clawparts">
+
+                <div id="clawopen" class="clawopen"> </div>
+                <div class="clawclosed"><img src="https://jonelliot.ca/banners/RECROOM/claw-closed.png" /> </div>
+                <div class="clawclose"></div>
+                <div id="object" class="object"> </div>
+            </div>
+        </div>
+
+        <div id="clawreflectioncontainer">
+            <div id="clawreflection" class="clawcontainer">
+                <div class="bits"><img src="https://jonelliot.ca/banners/RECROOM/bits.png" /></div>
+                <div class="clawparts">
+                    <div class="clawopen"> </div>
+                    <div class="clawclosed"><img src="https://jonelliot.ca/banners/RECROOM/claw-closed.png" /> </div>
+                    <div class="clawclose"></div>
+                    <div class="object"> </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="background"> <img src="https://jonelliot.ca/banners/RECROOM/background.png" /> </div>
+
+        <div id="winner"> WINNER! </div>
+        <div id="grab"> </div>
+
+
+    </div>
+
+    <script type="text/javascript">
+            TweenMax.to ("#loader",1,{ease:Linear.easeNone, rotation:-360,repeat:-1})
+
+window.onload = function () { 
+
+// eyeBuild.initialize();
+document.getElementById("load").style.display = "none";
+document.getElementById("container").style.display = "block";
+
+
+TweenMax.set ("#winner",{scale:0})
+TweenMax.set (".clawcontainer",{x:-20})
+TweenMax.set (".clawopen",{display:'none'})
+TweenMax.set ("#zoom",{display:'none'})
+
+
+var introTimeline = new TimelineMax();
+introTimeline
+.from ("#intro",1,{backgroundColor : 'rgba(0, 0, 0, 1)'})
+.from ("#introtext",1.3,{ease: Elastic.easeOut.config(1, 0.8),scale:0,force3D:false},"+=0.5")
+.from ("#startbutton",0.8,{ease: Power2.easeInOut,y:30,opacity:0},"-=0.6")
+;
+
+////RANDOM PRIZES////
+
+var random= Math.floor(Math.random() * 9) + 0;
+var Prize = ["url('https://jonelliot.ca/banners/RECROOM/prize1.png')",
+                 "url('https://jonelliot.ca/banners/RECROOM/prize2.png')",
+                 "url('https://jonelliot.ca/banners/RECROOM/prize3.png')",
+                 "url('https://jonelliot.ca/banners/RECROOM/prize4.png')",
+                 "url('https://jonelliot.ca/banners/RECROOM/prize5.png')",
+                 "url('https://jonelliot.ca/banners/RECROOM/prize6.png')",
+                 "url('https://jonelliot.ca/banners/RECROOM/prize7.png')",
+                 "url('https://jonelliot.ca/banners/RECROOM/prize8.png')",
+                 "url('https://jonelliot.ca/banners/RECROOM/prize9.png')",
+                 "url('https://jonelliot.ca/banners/RECROOM/prize10.png')"
+                 ];
+document.getElementById("object").style.backgroundImage=Prize[random];
+
+////ROLLOVERS AND CLICKS////
+
+document.getElementById("discoverfun").onmouseout = function() {
+  this.style.backgroundImage="url(https://jonelliot.ca/banners/RECROOM/discoverfun.png)";
+}
+
+document.getElementById("discoverfun").onmouseover = function() {
+  this.style.backgroundImage="url(https://jonelliot.ca/banners/RECROOM/discoverfunclicked.png)";
+}
+document.getElementById("discoverfun").onclick = function() {
+  eyeBuild.doClick(0)
+}
+document.getElementById("startbutton").onmouseover = function() {
+  this.style.backgroundImage="url(https://jonelliot.ca/banners/RECROOM/startbtnclicked.png)";
+}
+document.getElementById("startbutton").onmouseout = function() {
+  this.style.backgroundImage="url(https://jonelliot.ca/banners/RECROOM/startbtn.png)";
+}
+document.getElementById("startbutton").onclick = function() {
+  TweenMax.to ("#intro",0.5,{opacity:0,display:'none'})
+  TweenMax.to ("#grab",1,{ease:Elastic.easeOut.config(1, 0.8),y:-50})
+
+var grabBounce = new TimelineMax({repeat:-1});
+grabBounce
+.to ("#pause",2,{opacity:0})
+.to ("#grab",0.2,{ease:Power2.easeOut,y:-57})
+.to ("#grab",0.3,{ease:Power2.easeIn,y:-50})
+.to ("#grab",0.2,{ease:Power2.easeOut,y:-55})
+.to ("#grab",0.3,{ease:Power2.easeIn,y:-50})
+.to ("#pause",2,{opacity:0})
+;
+}
+
+document.getElementById("grab").onmouseover = function() {
+  this.style.backgroundImage="url(https://jonelliot.ca/banners/RECROOM/grabbtnclicked.png)";
+}
+document.getElementById("grab").onmouseout = function() {
+  this.style.backgroundImage="url(https://jonelliot.ca/banners/RECROOM/grabbtn.png)";
+}
+
+////ON GRAB////
+
+document.getElementById("grab").onclick = function(){
+
+var element = document.getElementById('clawcontainer');
+var position = element.getBoundingClientRect();
+var x = position.left;
+var y = position.top;
+
+shift1 = function() {
+
+var shift1Timeline = new TimelineMax();
+shift1Timeline
+.to ("#basketball",0.6,{ease: Power2.easeInOut,x:-4,y:6},"shift1out")
+.to ("#burger",0.6,{ease: Power2.easeInOut,x:3,y:5},"shift1out")
+.to ("#pingpong",0.6,{ease: Power2.easeInOut,y:4,rotation:5},"shift1out")
+
+.to ("#basketball",0.6,{ease: Power2.easeInOut,x:0,y:0},"shift1in+=0.6")
+.to ("#burger",0.6,{ease: Power2.easeInOut,x:0,y:0},"shift1in+=0.6")
+.to ("#pingpong",0.6,{ease: Power2.easeInOut,x:0,y:0,rotation:0},"shift1in+=0.6")
+; }
+
+shift2 = function() {
+
+var shift2Timeline = new TimelineMax();
+shift2Timeline
+.to ("#drink",0.6,{ease: Power2.easeInOut,y:5},"shift2out")
+.to ("#wheel",0.6,{ease: Power2.easeInOut,x:5,y:5},"shift2out")
+.to ("#controller",0.6,{ease: Power2.easeInOut,x:3,y:3},"shift2out")
+.to ("#mic",0.6,{ease: Power2.easeInOut,rotation:-7},"shift2out")
+
+.to ("#drink",0.6,{ease: Power2.easeInOut,x:0,y:0},"shift2in+=0.6")
+.to ("#wheel",0.6,{ease: Power2.easeInOut,x:0,y:0},"shift2in+=0.6")
+.to ("#controller",0.6,{ease: Power2.easeInOut,x:0,y:0},"shift2in+=0.6")
+.to ("#mic",0.6,{ease: Power2.easeInOut,rotation:0},"shift2in+=0.6")
+; }
+
+shift3 = function() {
+
+var shift3Timeline = new TimelineMax();
+shift3Timeline
+.to ("#donut",0.6,{ease: Power2.easeInOut,x:0,y:7},"shift3out")
+.to ("#bear",0.6,{ease: Power2.easeInOut,x:3,y:5},"shift3out")
+.to ("#arcade",0.6,{ease: Power2.easeInOut,y:4,rotation:5},"shift3out")
+.to ("#eightball",0.6,{ease: Power2.easeInOut,y:4,rotation:5},"shift3out")
+
+.to ("#donut",0.6,{ease: Power2.easeInOut,x:0,y:0},"shift3in+=0.6")
+.to ("#bear",0.6,{ease: Power2.easeInOut,x:0,y:0},"shift3in+=0.6")
+.to ("#arcade",0.6,{ease: Power2.easeInOut,x:0,y:0,rotation:0},"shift3in+=0.6")
+.to ("#eightball",0.6,{ease: Power2.easeInOut,x:0,y:0,rotation:0},"shift3in+=0.6")
+
+; }
+
+
+if (x <=55) {
+  
+  dropZone = shift1;
+}
+
+if (x<=155 && x>=56) {
+
+  dropZone = shift2;
+}
+
+if (x<=255 && x>=156) {
+  
+  dropZone = shift3;
+}
+
+clawTimeline.pause();
+
+
+var pickupTimeline = new TimelineMax();
+pickupTimeline
+.to ("#grab",0.4,{ease:Power2.easeInOut, y:100,display:'none'})
+.to (".clawparts",0.5,{rotation:0})
+.to (".clawopen",0.1,{display:'block'},"trigger")
+.to (".clawclosed",0.1,{display:'none'},"trigger")
+.to (".clawparts",1,{ease:Power2.easeInOut, y:120},"drop+=0.5")
+.add (dropZone,"drop+=1")
+.set (".object",{display:'block'})
+.to (".object",0.5,{opacity:1})
+.to (".clawparts",2,{ease:Power2.easeInOut,y:0})
+.to ("#pause",1,{opacity:0})
+.to (".clawcontainer,#clawreflection",0.8,{ease:Power2.easeInOut,y:-300})
+.set ("#zoom",{display:'block'})
+.to ("#zoom",0.8,{ease: Back.easeIn.config(3.7),rotationY:-83,opacity:0},"+=2.2")
+.set ("#border,#glare,#toyscontainer,#clawcontainer,#clawreflectioncontainer,#background",{display:'none'},"-=1")
+.set ("#endframe",{display:'block',rotationY:90,opacity:0})
+.to ("#endframe",0.5,{ ease: Back.easeOut.config(2.7), rotationY:0,opacity:1})
+;
+
+};
+
+////CLAW MOVEMENT////
+
+var clawTimeline = new TimelineMax({repeat:-1});
+clawTimeline
+.set (".clawparts",{rotation:0})
+.set (".clawcontainer",{x:-20})
+.to (".clawcontainer",2,{ease:Power2.easeIn, x:220},"right")
+.to (".clawparts",2,{ease:Power2.easeIn, rotation:10},"right")
+.to (".clawparts",0.3,{ease:Power2.easeOut, rotation:-14},"right+=2")
+.to (".clawparts",1,{ease: Back.easeOut.config(2),rotation:0})
+.to ("#clawreflection",2,{ease:Power2.easeIn,x:250},"right")
+.to (".clawcontainer",2,{ease:Power2.easeIn, x:-20},"left")
+.to (".clawparts",2,{ease:Power2.easeIn, rotation:-10},"left")
+.to (".clawparts",0.3,{ease:Power2.easeOut, rotation:10},"left+=2")
+.to (".clawparts",1,{ease: Back.easeOut.config(2),rotation:0})
+;
+
+};
+
+
+
+
+    </script>
+</body>
+
+</html>

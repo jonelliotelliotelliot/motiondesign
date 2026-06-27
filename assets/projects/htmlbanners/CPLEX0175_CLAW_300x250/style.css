@@ -1,0 +1,352 @@
+ body {
+     margin: 0px;
+}
+ #container {
+     border: 1px solid Black;
+     box-sizing:border-box;
+     -moz-box-sizing:border-box;
+     -webkit-box-sizing:border-box;
+     background-color: White;
+     position: absolute;
+     width: 300px;
+     height:250px;
+     overflow: hidden;
+     perspective: 500px;
+     display: none;
+}
+ #claw {
+     position: absolute;
+     top:-160px;
+}
+ #claw div {
+     position: absolute;
+}
+ #crane img {
+     width:80px;
+}
+ #grab {
+     position: absolute;
+     width:61px;
+     height:44px;
+     background-image:url("grabbtn.png");
+     bottom:-73px;
+     left:120px;
+     z-index: 201;
+     cursor: pointer;
+}
+ #stuff {
+     position: absolute;
+     z-index: 0;
+}
+ #stuff img {
+     width:300px;
+     height:250px;
+}
+ .object {
+     top:211px;
+     left:16px;
+     display: none;
+     position: absolute;
+     width:70px;
+     height:72px;
+     background-image: url('');
+     z-index: 21;
+     opacity: 0;
+}
+ #winner {
+     width:150px;
+     height:40px;
+     background-color: Black;
+     font-family: Helvetica;
+     font-weight: Regular;
+     color: White;
+     font-size: 20px;
+     text-align: center;
+     padding-top:18px;
+     position: absolute;
+     z-index: 400;
+     border-radius: 10px;
+     letter-spacing: 2px;
+     left:80px;
+     top:85px;
+     border: 4px solid;
+     border-color: White;
+     box-shadow: 5px 10px #888888;
+     -webkit-box-shadow: 0px 6px 17px 0px rgba(0,0,0,0.43);
+     -moz-box-shadow: 0px 6px 17px 0px rgba(0,0,0,0.43);
+     box-shadow: 0px 6px 17px 0px rgba(0,0,0,0.43);
+     display: none;
+}
+ .clawcontainer {
+     position: absolute;
+     z-index: 20;
+     top:-130px;
+     opacity: 1;
+}
+ .clawparts {
+     position: absolute;
+     z-index: 20;
+     transform-origin: 50px 155px;
+     -moz-transform-origin: 50px 155px;
+     -webkit-transform-origin: 50px 155px;
+     -ms-transform-origin: 50px 155px;
+     width: 100px;
+     height: 250px;
+}
+ #originguide {
+     position: absolute;
+     width:2px;
+     height:2px;
+     background-color: White;
+     top:155px;
+     left:50px;
+     z-index: 300;
+     display: none;
+}
+ .clawopen, #clawopen {
+     width: 100px;
+     height: 250px;
+     position: absolute;
+     z-index: 20;
+     background: url('claw-sequence.png') left center;
+     animation: clawopen .6s steps(18) forwards;
+     -moz-animation: clawopen .6s steps(18) forwards;
+     -webkit-animation: clawopen .6s steps(18) forwards;
+     -ms-animation: clawopen .6s steps(18) forwards;
+     display: block;
+}
+ .clawclose {
+     width: 100px;
+     height: 250px;
+     position: absolute;
+     z-index: 20;
+     background: url('claw-sequence.png') left center;
+     animation: clawclose .6s steps(18) reverse;
+     -webkit-animation: clawclose .6s steps(18) reverse;
+     -moz-animation: clawclose .6s steps(18) reverse;
+     -ms-animation: clawclose .6s steps(18) reverse;
+     display: none;
+}
+ .bits {
+     position: absolute;
+     z-index: 21;
+     top:130px;
+}
+ .clawclosed {
+     position: absolute;
+     z-index: 20;
+}
+ @-moz-keyframes clawopen {
+     100% {
+         background-position: -1800px;
+    }
+}
+ @-moz-keyframes clawclose {
+     100% {
+         background-position: -1800px;
+    }
+}
+ @keyframes clawopen {
+     100% {
+         background-position: -1800px;
+    }
+}
+ @keyframes clawclose {
+     100% {
+         background-position: -1800px;
+    }
+}
+ #border {
+     position: absolute;
+     z-index: 200;
+     pointer-events:none;
+}
+ #glare {
+     position: absolute;
+     z-index: 198;
+     pointer-events:none;
+}
+ #toys {
+     position: absolute;
+     z-index: 21;
+}
+ #background {
+     position: absolute;
+     z-index: 19;
+}
+ #clawreflectioncontainer {
+     position: absolute;
+     top:-10px;
+     left:-15px;
+}
+ #clawreflection {
+     opacity: 0.1;
+}
+ #dropzones {
+     width:300px;
+     height:250px;
+     position: absolute;
+     z-index: 300;
+     opacity: 0.2;
+}
+ #drop1,#drop2,#drop3 {
+     width:100px;
+     height:250px;
+     position: relative;
+     float:left;
+}
+ #drop1 {
+     background-color: Yellow;
+}
+ #drop2 {
+     background-color: Magenta;
+}
+ #drop3 {
+     background-color: Blue;
+}
+ #toyscontainer {
+     position: absolute;
+     z-index: 22;
+     width:300px;
+     height:250px;
+     display: block;
+     top:10px;
+}
+ #toyscontainer div {
+     position: absolute;
+}
+ #burger {
+     top:188px;
+     left:56px;
+}
+ #controller {
+     top:208px;
+     left:142px;
+}
+ #bear {
+     top:170px;
+     left:246px;
+}
+ #basketball {
+     top:170px;
+     left:-15px;
+}
+ #drink {
+     top:145px;
+     left:140px;
+}
+ #donut {
+     top:160px;
+     left:182px;
+}
+ #mic {
+     top:153px;
+     left:102px;
+}
+ #wheel {
+     top:178px;
+     left:98px;
+}
+ #eightball {
+     top:185px;
+     left:204px;
+}
+ #logo {
+     top:187px;
+     left:160px;
+}
+ #arcade {
+     left:227px;
+     top:139px;
+}
+ #pingpong {
+     top:153px;
+     left:50px;
+}
+ #startbutton {
+     width:124px;
+     height:33px;
+     background-image:url("startbtn.png");
+}
+ #intro {
+     position: absolute;
+     z-index: 300;
+     width:300px;
+     height:250px;
+     background-color:rgba(0, 0, 0, 0.7);
+}
+ #intro div {
+     position: relative;
+     text-align: center;
+     margin: 0 auto;
+}
+ #introtext {
+     padding-top:70px;
+     padding-bottom:20px;
+     transform-origin: 50% 60%;
+     -moz-transform-origin: 50% 60%;
+     -webkit-transform-origin: 50% 60%;
+     -ms-transform-origin: 50% 60%;
+}
+ #startbutton {
+     cursor: pointer;
+}
+ #zoom {
+     z-index: 400;
+     width: 300px;
+     height: 250px;
+     position: absolute;
+     background: url('zoomoutblack.png') left center;
+     animation: zoomoutblack 1.7s steps(49) forwards;
+     -webkit-animation: zoomoutblack 1.7s steps(49) forwards;
+     -moz-animation: zoomoutblack 1.7s steps(49) forwards;
+     -ms-animation: zoomoutblack 1.7s steps(49) forwards;
+     display: block;
+     backface-visibility: hidden;
+}
+ @-moz-keyframes zoomoutblack {
+     100% {
+         background-position: -14700px;
+    }
+}
+ @keyframes zoomoutblack {
+     100% {
+         background-position: -14700px;
+    }
+}
+ #endframe {
+     position: absolute;
+     z-index: 401;
+     display: none;
+}
+ #discoverfun {
+     position: absolute;
+     width:124px;
+     height:33px;
+     top:153px;
+     left:88px;
+     z-index: 402;
+     background-image: url ("discoverfun.png");
+     cursor: pointer;
+}
+ #load {
+     position: absolute;
+     width:300px;
+     height:250px;
+     background-color: Black;
+     z-index: 600;
+}
+ #loader {
+     position: relative;
+     width:40px;
+     height:40px;
+     top:50%;
+     left:50%;
+     transform: translateX(-50%) translatey(-50%);
+     -webkit-transform: translateX(-50%) translatey(-50%);
+     -moz-transform: translateX(-50%) translatey(-50%);
+     -ms-transform: translateX(-50%) translatey(-50%);
+}
+ #preload {
+     display: none;
+}

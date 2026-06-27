@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>jonelliot - about</title>
+    <link rel="stylesheet" href="css/style.css?v=1.0">
+    <script src="js/head.js" defer></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js" integrity="sha512-EZI2cBcGPnmR89wTgVnN3602Yyi7muWo8y1B3a8WmIv1J9tYG+udH4LvmYjLiGp37yHB7FfaPBo8ly178m9g4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+<style>
+
+
+    #about {
+        height: 100vh;
+        width: 80vw;
+        min-width: 320px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: center; */
+        /* align-items: center; */
+    }
+
+
+
+    #about-content {
+        position: relative;
+        width: 80vw;
+        max-width: 700px;
+        min-width: 320px;
+        margin: 0 auto;
+        background-color: var(--bg-color);
+
+    }
+
+    #abouttext {
+       font-family: Poppins,sans-serif;
+        font-weight: 700;
+        font-size: 2.4rem;
+        line-height: 2.8rem;
+        color: var(--text-color);
+
+        letter-spacing: -0.02em;
+        z-index: 200;
+    }
+
+    #abouttext2 {
+        font-family: Poppins,sans-serif;
+        font-weight: 400;
+        font-size: 1.3rem;
+        line-height: 1.7rem;
+        color: var(--text-color);
+        padding-top: 20px;
+    }
+
+    #me {
+        position: relative;
+        width: 80vw;
+        max-width: 700px;
+        min-width: 320px;
+        margin: 0 auto;
+        /* top:5vw; */
+        padding-top: 40px;
+        top: 0; left: 0; clip-path: inset(1px 1px);
+
+    }
+    #character {
+        overflow: hidden;
+        background-color: #ffa800;
+        clip-path: circle(41% at 50% 50%);
+        object-fit: cover;
+    }
+    #character video {
+        height: auto;
+    }
+
+    #bubble {
+        position: fixed;
+        width: 200px;
+        top: 60px;
+        z-index: 400;
+
+    }
+/* Make the emoji container a full-screen overlay */
+#emojis {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    overflow: hidden; /* Hides emojis that move off-screen */
+
+    /* IMPORTANT: Prevents the overlay from blocking clicks on the content below */
+    pointer-events: none;
+}
+
+/* Style for each emoji */
+.emoji {
+    position: absolute; /* Allows positioning within the #emojis container */
+    font-size: 3rem;  /* Or any size you prefer */
+    user-select: none; /* Prevents users from highlighting the emojis */
+}
+
+    @media (max-width: 420px) and (orientation: portrait) {
+
+        #abouttext {
+        font-size: 1.9rem;
+        line-height: 2.1rem;
+        }
+
+        #abouttext2 {
+            font-size: 1rem;
+            line-height: 1.3rem;
+        }
+
+        .emoji {
+            font-size: 2rem;
+        }
+
+    }
+
+     @media (min-width: 1200px) {
+
+        #me {
+            left:-300px;
+            /* top:5vw; */
+
+        }
+
+
+
+        #about-content {
+           top:-300px;
+           left:250px;
+           bottom: 0;
+           /* background-color: bisque; */
+           /* background-color: white; */
+           padding: 10px;
+        }
+
+
+        #aboutcontainer {
+        top: 50%;
+  transform: translateY(-50%); /* Adjusts for the element's own height */
+  position: relative;
+  height: 920px; /* Adjust this to the height of your content */
+  /* background-color: #ffa800; */
+        }
+
+    }
+
+
+
+
+</style>
+
+
+
+<body>
+
+    <div id="navbar-placeholder"></div>
+
+<div id="emojis">
+<div class="emoji">&#9996;</div>
+<div class="emoji">&#128190;</div>
+<div class="emoji">&#128029;</div>
+<div class="emoji">&#127752;</div>
+<div class="emoji">&#128690;</div>
+<div class="emoji">&#127875;</div>
+<div class="emoji">&#127790;</div>
+</div>
+
+<div id="about">
+    <div id="aboutcontainer">
+        <div id="me">
+            <div id="character"><video data-src="assets/projects/about/about-video.webm" autoplay loop muted playsinline></video></div>
+            <div id="bubble"><img src="assets/projects/about/bubble.svg"></div>
+        </div>
+
+        <div id="about-content">
+            <div id="abouttext">Hi, I have <span style="color:#ffa800">15+ years experience</span> working in advertising with a variety of skills such as: web design, html banner creation, 2D and 3D motion graphics for online videos, broadcast and social media.</div>
+            <div id="abouttext2">I love to experiment with new animation techniques, discover new software and apply what I've learned to daily client work, or personal work wherever I can.<br><br><br><br></div>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/main.js"></script>
+<script>
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+
+     // --- Function for the character video's subtle movement ---
+    function moveCharacter() {
+        gsap.to("#character", {
+            scale: gsap.utils.random(0.8, 1),
+            x: gsap.utils.random(-50, 50),
+            duration: gsap.utils.random(2, 4), // Random duration for a more natural feel
+            ease: "power1.inOut",
+            onComplete: moveCharacter, // Call the function again when the animation completes
+        });
+    }
+
+    // --- Function for the bubble's wandering movement ---
+    function moveBubble() {
+        gsap.to("#bubble", {
+            x: gsap.utils.random(0, 300),
+            y: gsap.utils.random(0, 300),
+            duration: gsap.utils.random(2, 3), // Random duration here too
+            ease: "power1.inOut",
+            onComplete: moveBubble,
+        });
+    }
+
+    // --- Start both animations ---
+   // moveCharacter();
+    moveBubble();
+
+
+
+
+
+
+    const emojis = document.querySelectorAll('.emoji');
+
+    let viewportWidth;
+    let viewportHeight;
+
+    function debounce(func, delay = 250) {
+        let timeout;
+        return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    }
+
+    function move(element) {
+        gsap.to(element, {
+            x: gsap.utils.random(0, viewportWidth),
+            y: gsap.utils.random(0, viewportHeight),
+            duration: gsap.utils.random(4, 6),
+            ease: 'power1.inOut',
+            onComplete: move,
+            onCompleteParams: [element]
+        });
+    }
+
+    // This function now smoothly handles both the initial setup and resizing
+    function init() {
+        viewportWidth = window.innerWidth;
+        viewportHeight = window.innerHeight;
+
+        emojis.forEach((emoji) => {
+            // Stop the emoji wherever it is
+            gsap.killTweensOf(emoji);
+
+            // Immediately start a new animation to a new random spot.
+            // GSAP automatically animates from the current position.
+            move(emoji);
+        });
+    }
+
+    // On first load, we need to set the initial random positions
+    // before starting the animation loop.
+    (() => {
+        viewportWidth = window.innerWidth;
+        viewportHeight = window.innerHeight;
+        emojis.forEach((emoji) => {
+            gsap.set(emoji, {
+                x: gsap.utils.random(0, viewportWidth),
+                y: gsap.utils.random(0, viewportHeight),
+            });
+            move(emoji);
+        });
+    })();
+
+
+    // On resize, just re-run the simplified init function
+    window.addEventListener('resize', debounce(init));
+});
+
+
+
+
+</script>
+
+</body>
+</html>

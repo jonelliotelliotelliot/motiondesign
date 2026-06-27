@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://s0.2mdn.net/ads/studio/cached_libs/gsap_3.5.1_min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<meta name="ad.size" content="width=300,height=250">
+<meta charset="UTF-8">
+<style type="text/css">
+body {
+	margin: 0px;
+}
+#container {
+	width:300px;
+	height:250px;
+	overflow: hidden;
+	position: absolute;
+	background: linear-gradient(rgba(0,42,92,1) 30%, rgba(0,176,185,1) 100%);
+	display: none;
+}
+#clicktag {
+    width: 100%;
+    height: 100%;
+    z-index: 300;
+    position: absolute;
+    display: block;
+    cursor: pointer;
+}
+#idbox div {
+	position: absolute;
+}
+#idbox img {
+	width:100%;
+	height:100%;
+}
+#idbox {
+	position: absolute;
+	width:630px;
+	height:525px;
+	/*display: none;*/
+	overflow: hidden;
+	left:-165px;
+	top:-156px;
+}
+#front {
+	position: absolute;
+	width:300px;
+	height:286px;
+	overflow: hidden;
+	padding:30px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+#frame {
+	width: calc(100% - 60px);
+	height: calc(100% - 60px);
+	outline: 30px solid #00B0B9;
+	position: absolute;
+}
+#frontimage {
+	position: absolute;
+	width: calc(100% - 60px);
+	height: calc(100% - 60px);
+}
+#elements div {
+	position: absolute;
+	width:100%
+	height:100%;
+}
+#button {
+	position: absolute;
+	background: linear-gradient(45deg,rgba(0,42,92,1) -60%, rgba(0,176,185,1) -40%, rgba(0,42,92,1) -20%);
+	padding: 5px 8px 5px 8px;
+	background-color: #002A5C;
+	left:34px;
+	bottom:30px;
+}
+#play {
+	width: 300px;
+	height: 250px;
+	background-color: black;
+	position: absolute;
+	cursor: pointer;
+	background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url("203835-UofT-Generic-300x250-EN.jpg");
+}
+#playbutton {
+	width: 40px;
+	height: 40px;
+	background-color: white;
+	border-radius: 30px;
+	position: absolute;
+	  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+#playbutton i {
+	position: absolute;
+	  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+#btn i {
+		position: absolute;
+	  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+#btn {
+	position: absolute;
+	z-index: 500;
+	width: 30px;
+	height: 30px;
+	background-color: white;
+	border-radius: 20px;
+	right: 15px;
+	bottom: 15px;
+	cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div id="container">
+	<div id="idbox">
+		<div id="backimage"><img src="image-back.jpg"/></div>
+		<div id="front"><div id="frontimage"><img src="image-front.jpg"/></div><div id="frame"></div></div>
+	</div>
+	<div id="elements">
+		<div id="copy"><img src="generic-copy.svg"/></div>
+		<div id="headline"><img src="generic-headline.svg"/></div>
+		<div id="logo"><img src="logo.svg"/></div>
+	</div>
+	<div id="clicktag"></div>
+	<div id="button"><img src="button-txt.svg"/></div>
+	<div id="btn"><i class="fa-solid fa-rotate"></i></div>
+</div>
+<div id="play">
+	<div id="playbutton"><i class="fa-solid fa-circle-play fa-2xl"></i></div>
+</div>
+<script type="text/javascript">
+var clickTag = "http://www.google.com";
+document.getElementById("clicktag").onclick = function() {
+    window.open(window.clickTag)
+}
+document.getElementById("clicktag").onmouseover = function() {
+	var buttonRollover = new TimelineMax();
+	buttonRollover
+	.set ("#button",{backgroundImage:"linear-gradient(45deg,rgba(0,42,92,1) -60%, rgba(0,176,185,1) -40%, rgba(0,42,92,1) -20%)"})
+	.to ("#button",1.8,{ease:Power2.easeInOut,backgroundImage:"linear-gradient(45deg,rgba(0,42,92,1) 140%, rgba(0,176,185,1) 160%, rgba(0,42,92,1) 180%)"})
+;
+}
+document.getElementById("play").onclick = function() {
+document.getElementById("container").style.display = "block";
+document.getElementById("play").style.display = "none";
+var mainTimeline = new TimelineMax();
+mainTimeline
+.to ("#idbox",6,{ease:Power2.easeInOut,scale:0.5,y:20,force3D:false},"intro")
+.from ("#frontimage",5,{ease:Power2.easeInOut,scale:2,force3D:false},"intro")
+.from ("#backimage",6,{ease:Power2.easeInOut,scale:2,force3D:false},"intro")
+.to ("#idbox",1.5,{ease:Power2.easeInOut,y:-130},"headline")
+.to ("#backimage",0.8,{ease:Power2.easeInOut,opacity:0},"headline")
+.from ("#headline",1.5,{ease:Power2.easeInOut,y:200},"headline")
+.to ("#pause",1,{opacity:0})
+.to ("#idbox",1,{ease:Power2.easeInOut,y:-300},"endframe")
+.to ("#headline",1,{ease:Power2.easeInOut,y:-180},"endframe")
+.from ("#copy",1,{ease:Power2.easeInOut,y:300},"endframe")
+.from ("#logo",0.8,{ease:Power2.easeInOut,opacity:0},"endframe+=0.5")
+.to ("#container",1,{ease:Power2.easeInOut,backgroundImage:"linear-gradient(rgba(0,42,92,1) 20%, rgba(0,176,185,1) 50%)"},"endframe")
+.from ("#button",1,{ease:Power2.easeInOut,x:-200},"endframe+=1")
+.set ("#button",{backgroundImage:"linear-gradient(45deg,rgba(0,42,92,1) -60%, rgba(0,176,185,1) -40%, rgba(0,42,92,1) -20%)"})
+.to ("#button",1.8,{ease:Power2.easeInOut,backgroundImage:"linear-gradient(45deg,rgba(0,42,92,1) 140%, rgba(0,176,185,1) 160%, rgba(0,42,92,1) 180%)"})
+.from ("#btn",1,{ease:Power2.easeInOut,scale:0,rotate:-360},"-=0.5")
+;
+document.getElementById("btn").onclick = function() {
+    mainTimeline.restart();
+}
+}
+</script>
+</body>
+</html>

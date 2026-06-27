@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script
+    src="https://s0.2mdn.net/ads/studio/cached_libs/tweenmax_1.19.1_92cf05aba6ca4ea5cbc62b5a7cb924e3_min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="ad.size" content="width=300,height=250">
+  <meta charset="UTF-8">
+  <style type="text/css">
+    #container {
+      border: 1px solid Black;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      background-color: #ed1d24;
+      position: absolute;
+      width: 300px;
+      height: 250px;
+      overflow: hidden;
+      display: none;
+      -webkit-perspective: 1000px;
+      perspective: 1000px;
+    }
+    #clicktag {
+      width: 300px;
+      height: 250px;
+      z-index: 1500;
+      position: absolute;
+      display: block;
+      cursor: pointer;
+    }
+    body {
+      margin: 0px;
+    }
+    #dotscontainer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    #dots {
+      position: absolute;
+      left: 98px;
+      top: 109px;
+      width: 104px;
+    }
+    #module1,
+    #module2,
+    #module3 {
+      position: absolute;
+    }
+    #module1 {
+      z-index: 2;
+    }
+    #module2 {
+      z-index: 1;
+    }
+    #module3 {
+      z-index: 1;
+    }
+    .threedots {
+      width: 30px;
+      height: 30px;
+      /*background-color: #222222;*/
+      background-color: White;
+      position: relative;
+      float: left;
+    }
+    .sixdots {
+      width: 30px;
+      height: 30px;
+      background-color: #222222;
+      /* background-color: White;*/
+      position: relative;
+      float: left;
+      top: 37px;
+    }
+    .plusdots {
+      width: 30px;
+      height: 30px;
+      background-color: White;
+      position: relative;
+      float: left;
+    }
+    #threedots2,
+    #threedots3,
+    #sixdots2,
+    #sixdots3 {
+      margin-left: 7px;
+    }
+    #plusdots2,
+    #plusdots3 {
+      margin-left: 7px;
+    }
+    #plusdots2 {
+      opacity: 0;
+    }
+    #guide {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      z-index: 500;
+      position: absolute;
+    }
+    #line1 {
+      width: 1px;
+      height: 100%;
+      background-color: Blue;
+      left: 50%;
+      position: absolute;
+    }
+    #line2 {
+      height: 1px;
+      width: 100%;
+      background-color: Blue;
+      top: 50%;
+      position: absolute;
+    }
+    #less div,
+    #equalstop div,
+    #equalsbottom div {
+      width: 30px;
+      height: 30px;
+      /*background-color: #222222;*/
+      background-color: White;
+      position: relative;
+      float: left;
+    }
+    #equalstop div,
+    #equalsbottom div {
+      background-color: #222222;
+    }
+    #less2,
+    #less3,
+    #equals2,
+    #equals3,
+    #equals5,
+    #equals6 {
+      margin-left: 7px;
+    }
+    #equalsbottom {
+      top: 7px;
+      position: relative;
+    }
+    #less {
+      top: -45px;
+      position: relative;
+    }
+    #module4 {
+      top: -179px;
+      position: absolute;
+    }
+    #headline {
+      position: absolute;
+      width: 60%;
+      top: 0px;
+      z-index: 7;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 110px;
+    }
+    #redcovertop {
+      width: 100%;
+      height: 100%;
+      background-color: #ed1d24;
+      position: absolute;
+      z-index: 11;
+      border-bottom-color: White;
+      border-bottom-width: 2px;
+      border-bottom-style: inset;
+      border-bottom-style: solid;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+    #redcoverbottom {
+      width: 100%;
+      height: 100%;
+      background-color: #ed1d24;
+      position: absolute;
+      z-index: 11;
+      border-top-color: White;
+      border-top-width: 2px;
+      border-top-style: inset;
+      border-top-style: solid;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+    #redbackground {
+      width: 100%;
+      height: 100%;
+      background-color: #ed1d24;
+      /*background-color: Yellow;*/
+      display: none;
+      position: absolute;
+      z-index: 8;
+    }
+    #sponsor {
+      position: absolute;
+      bottom: 5px;
+      left: 10px;
+      z-index: 40;
+    }
+    #sponsor img {
+      width: 53px;
+    }
+    #logo div {
+      position: absolute;
+      bottom: 5px;
+      right: 10px;
+    }
+    #logoblack {
+      z-index: 40;
+    }
+    #logowhite {
+      z-index: 40;
+      display: none;
+    }
+    #logo img {
+      width: 50px;
+    }
+    #cta {
+      position: absolute;
+      z-index: 9;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 101px;
+      display: none;
+    }
+    #cta img {
+      width: 255px;
+    }
+    #ctacontainer {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+    #play {
+      width: 300px;
+      height: 250px;
+      background-color: black;
+      position: absolute;
+      cursor: pointer;
+      background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url("203835-UofT-Generic-300x250-EN.jpg");
+    }
+    #playbutton {
+      width: 40px;
+      height: 40px;
+      background-color: white;
+      border-radius: 30px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    #playbutton i {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    #btn i {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    #btn {
+      position: absolute;
+      z-index: 1500;
+      width: 30px;
+      height: 30px;
+      background-color: white;
+      border-radius: 20px;
+      right: 15px;
+      top: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="btn"><i class="fa-solid fa-rotate"></i></div>
+    <div id="logo">
+      <div id="logoblack"><img src="logo-black.svg" /></div>
+      <div id="logowhite"><img src="logo-white.svg" /></div>
+    </div>
+    <div id="sponsor"><img src="sponsor.svg" /></div>
+    <div id="guide">
+      <div id="line1"></div>
+      <div id="line2"></div>
+    </div>
+    <div id="ctacontainer">
+      <div id="redcovertop"></div>
+      <div id="redcoverbottom"></div>
+      <div id="cta"><img src="cta.svg" /></div>
+    </div>
+    <div id="redbackground"></div>
+    <div id="headline"><img src="headline.svg" /> </div>
+    <div id="dotscontainer">
+      <div id="dots">
+        <div id="module4">
+          <div id="less">
+            <div id="less1" class="less"></div>
+            <div id="less2" class="less"></div>
+            <div id="less3" class="less"></div>
+          </div>
+          <div id="equalstop">
+            <div id="equals1" class="equals"></div>
+            <div id="equals2" class="equals"></div>
+            <div id="equals3" class="equals"></div>
+          </div>
+          <div id="equalsbottom">
+            <div id="equals4" class="equals"></div>
+            <div id="equals5" class="equals"></div>
+            <div id="equals6" class="equals"></div>
+          </div>
+        </div>
+        <div id="module1">
+          <div id="threedots1" class="threedots"> </div>
+          <div id="threedots2" class="threedots"> </div>
+          <div id="threedots3" class="threedots"> </div>
+        </div>
+        <div id="module2">
+          <div id="sixdots1" class="sixdots"> </div>
+          <div id="sixdots2" class="sixdots"> </div>
+          <div id="sixdots3" class="sixdots"> </div>
+        </div>
+        <div id="module3">
+          <div id="plusdots1" class="plusdots"> </div>
+          <div id="plusdots2" class="plusdots"> </div>
+          <div id="plusdots3" class="plusdots"> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="play">
+    <div id="playbutton"><i class="fa-solid fa-circle-play fa-2xl"></i></div>
+  </div>
+  <script type="text/javascript">
+    document.getElementById("play").onclick = function () {
+      document.getElementById("container").style.display = "block";
+      document.getElementById("play").style.display = "none";
+      document.getElementById("container").style.display = "block";
+      TweenMax.set("#dotscontainer", { scale: 1 })
+      var mainTimeline = new TimelineMax();
+      mainTimeline
+        //.staggerFrom (".threedots",0.5,{ease:Back.easeOut,scale:0},"0.07")
+        .to("#pause", 0.5, { opacity: 0 })
+        .from("#dotscontainer", 1, { ease: Power2.easeInOut, scale: 10, x: -10, force3d: "false" }, "intro")
+        .set("#logowhite", { opacity: 0, display: "none" }, "intro")
+        .to("#logowhite", 0.8, { opacity: 1, display: "block" }, "intro")
+        .to("#logoblack", 0.8, { opacity: 0, display: "none" }, "intro")
+        .to("#pause", 0.5, { opacity: 0 })
+        .from("#threedots1", 0.5, { ease: Back.easeOut, x: 37 }, "first")
+        .from("#threedots3", 0.5, { ease: Back.easeOut, x: -37 }, "first")
+        .to("#pause", 0.5, { opacity: 0 })
+        .staggerFrom(".sixdots", 0.5, { ease: Back.easeOut, y: -37, display: "none" }, "0.07", "threedots")
+        .to(".threedots", 0.5, { backgroundColor: "#222222" }, "threedots")
+        .to("#module1,#module2", 0.5, { ease: Power2.easeInOut, y: -18.5 }, "threedots")
+        .to("#pause", 0.5, { opacity: 0 })
+        .to(".threedots", 0.5, { ease: Power2.easeInOut, y: 0 }, "middle")
+        .to(".sixdots", 0.5, { ease: Back.easeIn, y: -37, display: "none" }, "middle")
+        .to("#module1,#module2", 0.5, { ease: Power2.easeInOut, y: 0 }, "middle+=0.2")
+        .to("#module1", 0.5, { ease: Back.easeOut, rotation: 90 })
+        .from("#plusdots1", 0.5, { ease: Back.easeOut, x: 37, display: "none" }, "plus-=0.5")
+        .from("#plusdots2", 0.5, { display: "none" }, "plus-=0.5")
+        .from("#plusdots3", 0.5, { ease: Back.easeOut, x: -37, display: "none" }, "plus-=0.5")
+        .to(".threedots", 0.5, { backgroundColor: "#FFFFFF" }, "plus-=0.5")
+        .to("#pause", 0.5, { opacity: 0 })
+        .to("#dotscontainer", 0.8, { ease: Power2.easeInOut, scale: 0.6, y: 55, force3d: "false" }, "zoomout")
+        .from("#module4", 0.8, { opacity: 0 }, "zoomout+=0.3")
+        .to("#pause", 0.8, { opacity: 0 })
+        .to("#dotscontainer", 0.8, { ease: Power2.easeInOut, scale: 10, y: -20, x: -10, force3d: "false" }, "zoomin")
+        .from("#headline", 1, { ease: Power2.easeInOut, scale: 0, opacity: 0, force3d: "false" }, "zoomin")
+        .set("#logoblack", { opacity: 0, display: "none" }, "zoomin")
+        .to("#logoblack", 0.8, { opacity: 1, display: "block" }, "zoomin")
+        .to("#logowhite", 0.8, { opacity: 0, display: "none" }, "zoomin")
+        .to("#pause", 1, { opacity: 0 })
+        .fromTo("#redcovertop", 0.4, { ease: Power2.easeIn, y: -250 }, { y: -123 }, "curtainIn")
+        .fromTo("#redcoverbottom", 0.4, { ease: Power2.easeIn, y: 250 }, { y: 124 }, "curtainIn")
+        .set("#logowhite", { opacity: 0, display: "none" }, "curtainIn")
+        .to("#logowhite", 0.8, { opacity: 1, display: "block" }, "curtainIn")
+        .to("#logoblack", 0.8, { opacity: 0, display: "none" }, "curtainIn")
+        //.to ("#pause",0.3,{opacity:0},"curtainpause")
+        .set("#redbackground,#cta", { display: "block" }, "curtainOut")
+        .to("#redcovertop", 0.4, { ease: Power2.easeOut, y: -144, force3d: "false", scaleX: 0.83 }, "curtainOut")
+        .to("#redcoverbottom", 0.4, { ease: Power2.easeOut, y: 144, force3d: "false", scaleX: 0.83 }, "curtainOut")
+        .to("#pause", 1, { opacity: 0 })
+        .set("#dotscontainer", { scale: 1, zIndex: 200, x: 0, y: -21, opacity: 0 }, "endframe+=0.2")
+        .to("#dotscontainer", 1, { ease: Power2.easeInOut, scale: 0.33, opacity: 1, force3d: "false" }, "endframe+=0.2")
+        .set("#ctacontainer", { zIndex: 19 }, "endframe")
+        .to("#ctacontainer", 1, { ease: Power2.easeInOut, scale: 0.9, y: 36 }, "endframe")
+        .from("#sponsor", 0.8, { opacity: 0 }, "endframe+=0.5")
+        .from("#btn", 1, { ease: Power2.easeInOut, scale: 0, rotation: -360 }, "-=0.5")
+        ;
+      //mainTimeline.seek ("zoomin+=100")
+      //mainTimeline.reverse(7)
+      document.getElementById("btn").onclick = function () {
+        mainTimeline.restart();
+      }
+    };
+  </script>
+</body>
+</html>

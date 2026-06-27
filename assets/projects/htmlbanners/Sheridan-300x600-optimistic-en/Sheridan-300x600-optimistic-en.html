@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://s0.2mdn.net/ads/studio/cached_libs/gsap_3.1.0_min.js"></script>
+<meta name="ad.size" content="width=300,height=600">
+<meta charset="UTF-8">
+<style type="text/css">
+body {
+	margin: 0px;
+	background: lightgrey;
+}
+#container {
+	width:300px;
+	height:600px;
+	position: absolute;
+	display: none;
+	overflow: hidden;
+	background: white;
+}
+#clicktag {
+    width: 100%;
+    height: 100%;
+    z-index: 300;
+    position: absolute;
+    display: block;
+    cursor: pointer;
+}
+#container3d {
+	width:100%;
+	height:100%;
+	position: absolute;
+	perspective: 1400px;
+	perspective-origin:0px;
+}
+#camera,#empty{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	transform-style: preserve-3d;
+}
+#camera {
+	top: -15px;
+	left: -73px;
+}
+#camera div {
+	position: absolute;
+}
+#camera div img {
+	width: 151%
+}
+#pattern-lines {
+	transform: translateZ(-400px);
+	left: 106%;
+	top: -5%;
+	width: 35%
+}
+#pattern-dots {
+	transform: translateZ(-600px);
+	left: -33%;
+	top: 19.6%;
+	width: 75%
+}
+#front {
+	transform: translateZ(10px);
+	left: -12.3%;
+	top: -45px;
+}
+#mid {
+	transform: translateZ(0px);
+	top: 100px;
+	left: 10px;
+	width: 110%;
+}
+#back {
+	transform: translateZ(-90px);
+}
+#particles-back {
+	transform: translateZ(-400px);
+	width: 100%;
+	left: -50%;
+}
+#particles-back2 {
+	transform: translateZ(-410px);
+	width: 100%;
+	left: -50%;
+	top: 80%;
+}
+#particles-front {
+	transform: translateZ(320px);
+	width: 133.3%;
+	left: -53.3%;
+	top: 54.3%;
+}
+#elements, #elements div {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+#elements img {
+	width: 100%;
+}
+#typecontainer {
+	height: 100%;
+	width: 100%;
+}
+</style>
+</head>
+<body>
+<div id="container">
+	<div id="container3d">
+		<div id="empty">
+			<div id="camera">
+				<div id="particles-back2"><img src="particles-back.svg"/></div>
+				<div id="particles-back"><img src="particles-back.svg"/></div>
+				<div id="pattern-dots"><img src="pattern-dots.svg"/></div>
+				<div id="pattern-lines"><img src="pattern-lines.svg"/></div>
+				<div id="mid"><img src="ganyo-low.png"/></div>
+				<div id="particles-front"><img src="particles-front.svg"/></div>
+			</div>
+		</div>
+	</div>
+	<div id="elements">
+		<div id="wordmark"><img src="wordmark.svg"/></div>
+		<div id="isyou"><img src="isyou.svg"/></div>
+			<div class="type1" id="better"><img src="better.svg"/></div>
+			<div class="type" id="ismore"><img src="ismore.svg"/></div>
+			<div class="type" id="optimistic"><img src="optimistic.svg"/></div>
+			<!-- <div class="type" id="reality"><img src="reality.svg"/></div> -->
+		<div id="logo"><img src="logo.svg"/></div>
+		<div id="outline"><img src="outline.svg"/></div>
+	</div>
+<div id="clicktag"></div>
+</div>
+<script type="text/javascript">
+var clickTag = "http://www.google.com";
+window.onload = function () {
+document.getElementById("container").style.display = "block";
+var mainTimeline = new TimelineMax();
+mainTimeline
+.from ("#camera",4,{ease:Power2.easeInOut,translateZ:2000,translateX:100,translateY:480,force3D:false},"intro")
+.from ("#mid",3,{ease:Power2.easeInOut,translateX:30,force3D:false},"intro")
+.from ("#empty",8,{ease:Power2.easeOutOut,rotateY:-15,force3D:false},"intro")
+.to ("#camera",1,{ease:Power2.easeInOut,x:900,force3D:false},"exit-=3")
+//.to ("#back,#mid,#front,#pattern-lines,#pattern-dots",0.7,{ease:Power2.easeInOut,filter:"blur(20px)",force3D:false},"exit-=3")
+.from ("#better",2,{ease:Power2.easeInOut,scale:3,x:-500, opacity:0,force3D:false},"exit-=3.8")
+.from (".type",2,{ease:Power2.easeInOut,scale:3,force3D:false},"exit-=3.2")
+.staggerFrom(".type", 2, {ease:Power2.easeInOut, x:-500, opacity:0,y:75,force3D:false}, 0.2,"exit-=3.2")
+.to ("#pattern-dots",1,{ease:Power2.easeInOut,opacity:0,force3D:false},"exit-=3.2")
+.from ("#wordmark",0.8,{ease:Power2.easeInOut,opacity:0,force3D:false},"-=1")
+.to ("pause",1,{opacity:0,force3D:false})
+.to (".type",0.6,{ease:Power2.easeInOut,opacity:0,force3D:false},"endframe-=0.3")
+.to ("#better",1,{ease:Power2.easeInOut,x:-52,y:56,force3D:false},"endframe")
+.from ("#isyou",1,{ease:Power2.easeInOut,x:200,force3D:false},"endframe+=0.2")
+.to ("#wordmark",1,{ease:Power2.easeInOut,y:-20,force3D:false},"endframe+=0.2")
+;
+mainTimeline.seek ("intro+=1")
+document.getElementById("clicktag").onclick = function() {
+    window.open(window.clickTag)
+}
+};
+</script>
+</body>
+</html>

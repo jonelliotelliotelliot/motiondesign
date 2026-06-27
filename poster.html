@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Video Poster Test</title>
+    <style>
+        body { font-family: sans-serif; padding: 1em; background-color: #f0f0f0; }
+        h1, h2 { text-align: center; }
+        video {
+            width: 90%;
+            max-width: 400px;
+            display: block;
+            margin: 1em auto;
+            background-color: #ccc;
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>iOS Video Poster Test</h1>
+    <p style="text-align: center;">Testing the native behavior of video posters on iOS.</p>
+
+    <hr>
+
+    <h2>Test Case A: AVIF Poster</h2>
+    <p style="text-align: center;">This video uses the .avif poster format. Does the poster appear before the video plays?</p>
+    <video
+        poster="assets/videos/yellowtail-top.avif"  src="assets/videos/yellowtail-top.webm"     autoplay
+        muted
+        playsinline
+        loop>
+    </video>
+
+    <hr>
+
+
+</body>
+</html>
