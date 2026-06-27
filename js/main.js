@@ -401,8 +401,8 @@ interactiveVideos.forEach(container => {
 
     // Load the universal components, then initialize the page
     Promise.all([
-        loadComponent('#navbar-placeholder', '_navbar.html'),
-        loadComponent('#header-placeholder', '_header.html')
+        loadComponent('#navbar-placeholder', 'navbar.html'),
+        loadComponent('#header-placeholder', 'header.html')
     ]).then(() => {
         initializePage();
     });
