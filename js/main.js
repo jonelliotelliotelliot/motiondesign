@@ -46,6 +46,16 @@ const pauseAllOtherVideos = (currentVideo) => {
     });
 };
 
+// When any video finishes, reset it so its poster frame shows again.
+// load() keeps the src but returns the element to its initial poster state.
+// Capture phase, since 'ended' doesn't bubble.
+document.addEventListener('ended', (e) => {
+    const v = e.target;
+    if (v.tagName === 'VIDEO' && v.poster) {
+        v.load();
+    }
+}, true);
+
 interactiveVideos.forEach(container => {
     const video = container.querySelector('video');
     const controlButton = container.querySelector('.play-button-overlay');
@@ -67,8 +77,10 @@ interactiveVideos.forEach(container => {
 
         // This function now only sets up controls that depend on the video's duration.
         const setupFinalControls = () => {
-            // A. For long videos (>= 30s), switch to native browser controls.
-            if (video.duration >= 30) {
+            // A. For long videos (>= 30s), switch to native browser controls,
+            //    unless the page opts out with <body data-simple-controls>.
+            const forceSimpleControls = document.body.hasAttribute('data-simple-controls');
+            if (video.duration >= 30 && !forceSimpleControls) {
                 container.classList.add('native-controls-active');
                 video.controls = true;
                 controlButton.style.display = 'none'; // Hide our custom button
