@@ -65,17 +65,63 @@ body {
   /* MODIFIED: Use CSS variable */
   color: var(--link-hover-color)
 }
+/* Animated JON / ELL / IOT logo (js/jonelliot-logo.js). --ink is the logo's
+   colour; the accent colours near the cursor are paletteColor2 / 3 in
+   js/grid-type.js. main.js moves #heading in here, so on desktop the
+   logo sits left and the heading right, lined up with the content's edges. */
 .header {
-  padding-top: 50px;
-  margin: 0 auto;
+  --ink: #000000;
+  position: relative;
   z-index: 200;
-  width: 300px;
-  height: 240px;
-
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  padding: 80px 9vw 24px;
+  touch-action: pan-y;
+  overflow-x: clip;   /* scenes fling modules sideways; never widen the page */
+}
+body.dark-mode .header {
+  --ink: #f0f0f0;
 }
 .header-image {
+  display: block;
+  flex: none;
+  width: clamp(110px, 12vw, 150px);
   cursor: pointer;
-  top: 0; left: 0; clip-path: inset(2px 2px);
+}
+#jonelliot-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  overflow: visible;
+}
+.header #heading {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+}
+/* the global p margin (-5px all round) pushed the subtitle past the edge */
+.header #heading p {
+  margin-left: 0;
+  margin-right: 0;
+}
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 72px 0 30px;
+  }
+  .header #heading { text-align: center; }
+}
+
+/* keep the heading hidden until the header arrives and main.js moves it
+   into the header row, so it doesn't flash centred first */
+#header-placeholder:empty + #heading {
+  visibility: hidden;
 }
 #heading {
   text-align: center;
@@ -143,6 +189,14 @@ body {
 
 .see-more-btn {
   color:#333 !important;
+}
+
+/* desktop homepage: main.js moves the button after the cursor, so only its
+   fade is a CSS transition; the card itself takes the click */
+.follows-cursor .see-more-btn {
+  transition: opacity .3s ease-in-out;
+  pointer-events: none;
+  will-change: transform;
 }
 
 .see-more-btn:hover {
@@ -461,5 +515,26 @@ iframe {
   color: rgba(255, 255, 255, 0.85);
   z-index: 2; /* Sits above the video/image */
   pointer-events: none; /* Allows clicks to pass through */
+}
+
+/* card corner icons (main.js): a stack of cards, or on desktop a play mark
+   for video cards, which fades while the card is hovered and playing, or when
+   every video is autoplaying */
+.card-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 17px;
+  height: 17px;
+  color: #fff;
+  opacity: 0.85;   /* on the whole icon, so the rounding stroke doesn't show a seam */
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity .3s ease-in-out;
+}
+.grid-item:hover .play-icon,
+.grid-container.autoplaying .play-icon {
+  opacity: 0;
 }
 

@@ -147,26 +147,15 @@ interactiveVideos.forEach(container => {
     };
 
     // --- GLOBAL STATE AND INITIALIZATION FUNCTIONS ---
-    let isMotionReduced = false;
-    // NEW: Define header video names without suffixes
-    // const headerVideoBases = ['je-1', 'je-2', 'je-3', 'je-4', 'je-5'];
-
-    const headerVideoBases = ['je-inflate', 'je-fluid', 'je-molecular', 'je-blocks'];
-    let currentHeaderVideoIndex = 0; // Keep track of the current video
-
-    // NEW: Function to swap header video based on theme
-    const updateHeaderVideoTheme = () => {
-        const videoElement = document.querySelector('.header-image video');
-        if (videoElement) {
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const theme = isDarkMode ? 'dark' : 'light';
-            const newSrc = `assets/videos/${headerVideoBases[currentHeaderVideoIndex]}-${theme}.webm`;
-            if (videoElement.src !== newSrc) {
-                videoElement.src = newSrc;
-            }
-        }
-    };
-
+    // Bump with the ?v= on style.css / main.js in the pages, so returning
+    // visitors fetch fresh copies of everything main.js loads too.
+    const ASSET_VERSION = '1.1';
+    // On a desktop (mouse) the homepage grid starts still: each video plays
+    // while its card is hovered. The header logo keeps moving regardless.
+    // Touch screens can't hover, so they keep autoplaying.
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const isHomeGrid = !!document.querySelector('.grid-container');
+    let isMotionReduced = canHover && isHomeGrid;
    // This function initializes the navbar's buttons.
     const initializeNavbar = () => {
         const reduceMotionBtn = document.getElementById('reduce-motion-btn');
@@ -176,10 +165,15 @@ interactiveVideos.forEach(container => {
             const isHomePage = path === '/' || path.endsWith('/index.html');
 
             if (isHomePage) {
+                reduceMotionBtn.textContent = isMotionReduced ? 'enable motion' : 'reduce motion';
                 // If it's the homepage, add the event listener
                 reduceMotionBtn.addEventListener('click', () => {
                     isMotionReduced = !isMotionReduced;
                     reduceMotionBtn.textContent = isMotionReduced ? 'enable motion' : 'reduce motion';
+
+                    // the header logo always animates; this only affects the grid
+                    const grid = document.querySelector('.grid-container');
+                    if (grid) grid.classList.toggle('autoplaying', !isMotionReduced);
 
                     const allVideos = document.querySelectorAll('video');
                     if (isMotionReduced) {
@@ -202,33 +196,27 @@ interactiveVideos.forEach(container => {
                 document.body.classList.toggle('dark-mode');
                 const isDarkMode = document.body.classList.contains('dark-mode');
                 localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-                updateHeaderVideoTheme(); // Swap video on toggle
             });
         }
     };
 
-    // This function initializes the random video header.
+    // This function starts the animated logo in the header: the typeface
+    // (grid-type.js) first, then the animation that draws with it.
     const initializeHeader = () => {
-        const hc = document.querySelector('.header-image');
-        if (hc) {
-            // Select a random video index
-            currentHeaderVideoIndex = Math.floor(Math.random() * headerVideoBases.length);
-            const videoBaseName = headerVideoBases[currentHeaderVideoIndex];
-
-            // Determine theme and set the correct video source
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const theme = isDarkMode ? 'dark' : 'light';
-            const videoSrc = `assets/videos/${videoBaseName}-${theme}.webm`;
-
-            const videoElement = document.createElement('video');
-            videoElement.src = videoSrc;
-            videoElement.muted = true;
-            videoElement.loop = true;
-            videoElement.playsInline = true;
-            videoElement.autoplay = true;
-            hc.appendChild(videoElement);
-            if (isMotionReduced) videoElement.pause();
-        }
+        if (!document.getElementById('jonelliot-logo')) return;
+        // the page's heading shares the header row with the logo (see .header in style.css)
+        const heading = document.getElementById('heading');
+        if (heading) document.querySelector('.header').appendChild(heading);
+        const loadScript = src => new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.body.appendChild(script);
+        });
+        loadScript(`js/grid-type.js?v=${ASSET_VERSION}`)
+            .then(() => loadScript(`js/jonelliot-logo.js?v=${ASSET_VERSION}`))
+            .catch(error => console.error('Error loading header logo:', error));
     };
 
    // This function adds posters to standard autoplay videos and ensures
@@ -240,7 +228,8 @@ interactiveVideos.forEach(container => {
         autoplayVideos.forEach(video => {
             const videoSrc = video.dataset.src;
             if (videoSrc) {
-                const posterUrl = videoSrc.substring(0, videoSrc.lastIndexOf('.')) + '.avif';
+                // the video's name with .avif, unless data-poster names another file
+                const posterUrl = video.dataset.poster || videoSrc.substring(0, videoSrc.lastIndexOf('.')) + '.avif';
 
                 // 1. Set the poster on the video element so it's ready to be displayed.
                 video.poster = posterUrl;
@@ -328,7 +317,8 @@ interactiveVideos.forEach(container => {
                     video.playsInline = true; //
                     video.muted = true; //
                     video.loop = true; //
-                    video.preload = 'none'; //
+                    // hover-to-play needs the video ready before the cursor arrives
+                    video.preload = canHover ? 'auto' : 'none';
                     const source = document.createElement('source'); //
                     source.src = videoSrc; //
                     source.type = 'video/webm'; //
@@ -361,9 +351,16 @@ interactiveVideos.forEach(container => {
                 observer.observe(item);
                 const video = item.querySelector('video');
                 if (video) {
-                    item.addEventListener('mouseenter', () => { if (isMotionReduced) video.play(); });
+                    item.addEventListener('mouseenter', () => { if (isMotionReduced) video.play().catch(() => {}); });
                     item.addEventListener('mouseleave', () => { if (isMotionReduced) video.pause(); });
                 }
+
+                if (canHover) followSeeMore(item);
+
+                // corner icon: a play mark on hover-to-play cards, otherwise a
+                // fanned stack of cards (the project has more inside)
+                const icon = item.querySelector('.multi-icon-fa');
+                if (icon) icon.outerHTML = (canHover && video) ? PLAY_ICON : STACK_ICON;
 
                 // Get the project ID and the id-tab element
                 const projectId = item.dataset.projectId;
@@ -399,6 +396,86 @@ interactiveVideos.forEach(container => {
         }
     };
 
+    // Rounded play triangle: the stroke, joined round, softens the corners
+    const PLAY_ICON = '<svg class="card-icon play-icon" viewBox="0 0 16 16" aria-hidden="true">' +
+        '<path d="M5 3.2 L12.8 8 L5 12.8 Z" fill="currentColor" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>' +
+        '</svg>';
+    // Two rounded cards fanned apart, the back one fainter
+    const STACK_ICON = '<svg class="card-icon" viewBox="0 0 16 16" aria-hidden="true">' +
+        '<rect x="3.6" y="3.2" width="8.8" height="10.6" rx="2" transform="rotate(-12 8 13.8)" fill="currentColor" opacity=".45"/>' +
+        '<rect x="3.6" y="3.2" width="8.8" height="10.6" rx="2" transform="rotate(8 8 13.8)" fill="currentColor"/>' +
+        '</svg>';
+
+    // On hover, a grid card's 'see more' button trails the cursor on a soft
+    // spring. It fades in a short way back along the cursor's path and glides
+    // into place, and on leaving drifts a little further out the way the
+    // cursor went as it fades. Mouse only; touch keeps the static button.
+    const followSeeMore = (item) => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        item.classList.add('follows-cursor');
+        const NUDGE = 18;   // px the button travels on the way in / out
+        const pos = { x: 0, y: 0 }, vel = { x: 0, y: 0 }, target = { x: 0, y: 0 };
+        let running = false;
+
+        const tick = () => {
+            const btn = item.querySelector('.see-more-btn');
+            if (!btn) { running = false; return; }
+            // spring: pull toward the target, keep a little of last frame's velocity
+            vel.x = (vel.x + (target.x - pos.x) * 0.08) * 0.68;
+            vel.y = (vel.y + (target.y - pos.y) * 0.08) * 0.68;
+            pos.x += vel.x;
+            pos.y += vel.y;
+            btn.style.transform = `translate(${pos.x.toFixed(1)}px, ${pos.y.toFixed(1)}px)`;
+            const settled = Math.abs(target.x - pos.x) + Math.abs(target.y - pos.y) + Math.abs(vel.x) + Math.abs(vel.y) < 0.2;
+            if (settled) { running = false; return; }
+            requestAnimationFrame(tick);
+        };
+        const run = () => { if (!running) { running = true; requestAnimationFrame(tick); } };
+
+        // the offset (from the button's resting corner) that puts its top-left
+        // just below-right of the cursor, kept inside the card
+        const aim = (e) => {
+            const btn = item.querySelector('.see-more-btn');
+            if (!btn) return false;
+            const card = item.getBoundingClientRect();
+            const w = btn.offsetWidth, h = btn.offsetHeight, margin = 8;
+            const homeX = card.width - margin - w, homeY = card.height - margin - h;
+            const x = Math.min(Math.max(e.clientX - card.left + 14, margin), card.width - margin - w);
+            const y = Math.min(Math.max(e.clientY - card.top + 14, margin), card.height - margin - h);
+            target.x = x - homeX;
+            target.y = y - homeY;
+            return true;
+        };
+        // unit vector pointing out through the card edge nearest the cursor —
+        // the side it came in by, or is leaving by
+        const outward = (e) => {
+            const r = item.getBoundingClientRect();
+            const d = [
+                [e.clientX - r.left, -1, 0], [r.right - e.clientX, 1, 0],
+                [e.clientY - r.top, 0, -1], [r.bottom - e.clientY, 0, 1],
+            ].sort((a, b) => a[0] - b[0])[0];
+            return { x: d[1], y: d[2] };
+        };
+
+        item.addEventListener('mouseenter', (e) => {
+            if (!aim(e)) return;
+            const out = outward(e);
+            pos.x = target.x + out.x * NUDGE;
+            pos.y = target.y + out.y * NUDGE;
+            vel.x = vel.y = 0;
+            // place it now, not next frame, so it never flashes at its old spot
+            item.querySelector('.see-more-btn').style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+            run();
+        });
+        item.addEventListener('mousemove', (e) => { if (aim(e)) run(); });
+        item.addEventListener('mouseleave', (e) => {
+            const out = outward(e);
+            target.x = pos.x + out.x * NUDGE;
+            target.y = pos.y + out.y * NUDGE;
+            run();
+        });
+    };
+
     // --- SCRIPT ENTRY POINT ---
 
     // NEW: Apply theme from localStorage on initial load
@@ -413,8 +490,8 @@ interactiveVideos.forEach(container => {
 
     // Load the universal components, then initialize the page
     Promise.all([
-        loadComponent('#navbar-placeholder', 'navbar.html'),
-        loadComponent('#header-placeholder', 'header.html')
+        loadComponent('#navbar-placeholder', `navbar.html?v=${ASSET_VERSION}`),
+        loadComponent('#header-placeholder', `header.html?v=${ASSET_VERSION}`)
     ]).then(() => {
         initializePage();
     });
