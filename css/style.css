@@ -705,7 +705,14 @@ iframe {
   width: min(700px, 80vw);
   min-width: 320px;
   margin: 0 auto;
-  padding-bottom: 80px;
+  padding: 80px 0;   /* matched top and bottom, so centring is even */
+  /* centred in the window when there's room (big monitors); otherwise it
+     starts a little way under the nav */
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .about-me {
   padding-top: 40px;   /* clear of the nav */
@@ -780,6 +787,9 @@ iframe {
     padding: 10px;
     box-sizing: border-box;
   }
+}
+@media (max-width: 768px) {
+  .about { padding-top: 24px; }
 }
 @media (max-width: 420px) and (orientation: portrait) {
   .about-text .about-lede {
