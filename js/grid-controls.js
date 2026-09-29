@@ -8,7 +8,7 @@
   const DEFAULTS = {
     pattern: 'lines',     // lines | crosses | dots | off
     colour: null,         // null = the theme's own (#8fb3ff, or white in dark mode)
-    opacity: 16,          // %
+    opacity: null,        // %, null = the theme's own (16, or 4 in dark mode)
     weight: 1,            // px
     size: 4,              // px — cross arm length / dot diameter
     major: 0,             // every n cells a stronger mark (0 = off)
@@ -24,7 +24,11 @@
     try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; }
   };
   let store = load();          // { light: {...}, dark: {...} }
-  const settings = () => ({ ...DEFAULTS, ...(store[theme()] || {}) });
+  const settings = () => {
+    const s = { ...DEFAULTS, ...(store[theme()] || {}) };
+    if (s.opacity == null) s.opacity = theme() === 'dark' ? 4 : 16;
+    return s;
+  };
   const save = (patch) => {
     store[theme()] = { ...settings(), ...patch };
     try { localStorage.setItem(KEY, JSON.stringify(store)); } catch {}
@@ -204,7 +208,7 @@
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'g' && e.key !== 'G') return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
-    if (e.target.closest('input, textarea, select, [contenteditable]')) return;
+    if (e.target.closest?.('input, textarea, select, [contenteditable]')) return;
     toggle();
   });
   // light / dark each keep their own settings

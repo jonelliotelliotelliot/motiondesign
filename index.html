@@ -2,115 +2,140 @@
 <html lang="en">
 <head>
     <title>jonelliot - motion designer</title>
-    <link rel="stylesheet" href="css/style.css?v=1.4">
+    <link rel="stylesheet" href="css/style.css?v=1.13">
     <script src="js/head.js" defer></script>
 </head>
 <body class="home">
 
     <div id="navbar-placeholder"></div>
     <div id="header-placeholder"></div>
-    <div id="heading"><h1>motion designer</h1><p><a href="mailto://jonelliotelliot@gmail.com">jonelliotelliot@gmail.com</a></p></div>
+    <div id="heading"><h1>motion designer</h1><p><a href="mailto:jonelliotelliot@gmail.com">jonelliotelliot@gmail.com</a></p></div>
 
 
-    <!-- Freeform layout on the page grid (one cell = one cell of the logo).
-         Each card's style sets its column (--x) and row (--y), counted from
-         the logo's top-left corner, and its width (--w) and height (--h), all
-         in cells. The layout is 68 cells wide. Later cards sit on top where
-         they overlap. -->
+    <!-- Freeform layouts on the page grid (one cell = one cell of the logo).
+         Two layouts, picked by the window's width: wide (68 cells across)
+         and, below 1100px, narrow (51 cells). Phones get one stacked column.
+         Each card's style places it in both:
+           --x  --y  --w  --h    wide
+           --nx --ny --nw --nh   narrow
+         x is the column and y the row, counted from the logo's top-left
+         corner; w and h are the size; all in cells. Where cards overlap, the
+         later one sits on top, unless --z (wide) / --nz (narrow) says
+         otherwise. Cards marked data-autoplay play by themselves on desktop;
+         the rest play while hovered. The layout editor (press E, on a local copy served by
+         tools/layout-server.py) edits these numbers for you. -->
     <main class="grid-container">
-        <div class="grid-item" data-project-id="yellowtail" style="--x:1; --y:14; --w:17; --h:22">
+        <div class="grid-item" data-project-id="yellowtail" data-autoplay style="--x:1; --y:14; --w:17; --h:22;
+                 --nx:1; --ny:14; --nw:17; --nh:22; --nz:1">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/yellowtail-top.webm"></video></div>
             <div class="id-tab">yellowtail wine</div>
         </div>
-        <div class="grid-item" data-project-id="bai" style="--x:26; --y:8; --w:23; --h:14">
+        <div class="grid-item" data-project-id="bai" style="--x:26; --y:8; --w:23; --h:14;
+                 --nx:29; --ny:14; --nw:23; --nh:14; --nz:2">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/bai-matrix-top.webm"></video></div>
             <div class="id-tab">bai water</div>
         </div>
-        <div class="grid-item" data-project-id="naturalone" style="--x:47; --y:17; --w:22; --h:14">
+        <div class="grid-item" data-project-id="naturalone" style="--x:47; --y:17; --w:22; --h:14;
+                 --nx:24; --ny:38; --nw:28; --nh:17; --nz:7">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/n1-top.webm"></video></div>
             <div class="id-tab">naturalone</div>
         </div>
-        <div class="grid-item" data-project-id="tech" style="--x:21; --y:28; --w:11; --h:14">
+        <div class="grid-item" data-project-id="tech" style="--x:23; --y:26; --w:14; --h:17;
+                 --nx:21; --ny:22; --nw:11; --nh:14; --nz:3">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/tech-top.webm"></video></div>
             <div class="id-tab">personal work</div>
         </div>
-        <div class="grid-item" data-project-id="illustrations" style="--x:9; --y:40; --w:10; --h:13">
+        <div class="grid-item" data-project-id="illustrations" style="--x:9; --y:40; --w:10; --h:13;
+                 --nx:1; --ny:40; --nw:11; --nh:14; --nz:4">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><img data-src="assets/images/illustrations.avif" alt=""></div>
             <div class="id-tab">illustrations</div>
         </div>
-        <div class="grid-item" data-project-id="humber" style="--x:35; --y:35; --w:20; --h:20">
+        <div class="grid-item" data-project-id="humber" data-autoplay style="--x:35; --y:35; --w:20; --h:20;
+                 --nx:14; --ny:52; --nw:20; --nh:20; --nz:5">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/bringit.webm"></video></div>
             <div class="id-tab">humber college</div>
         </div>
-        <div class="grid-item" data-project-id="bai" style="--x:17; --y:51; --w:16; --h:16">
+        <div class="grid-item" data-project-id="bai" style="--x:17; --y:51; --w:16; --h:16;
+                 --nx:1; --ny:68; --nw:16; --nh:16; --nz:6">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/bai-spin-top.webm"></video></div>
             <div class="id-tab">bai water</div>
         </div>
-        <div class="grid-item" data-project-id="wave" style="--x:52; --y:44; --w:17; --h:17">
+        <div class="grid-item" data-project-id="wave" style="--x:52; --y:44; --w:17; --h:17;
+                 --nx:35; --ny:69; --nw:17; --nh:17; --nz:10">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/wave.webm"></video></div>
             <div class="id-tab">wave financial</div>
         </div>
-        <div class="grid-item" data-project-id="uoft" style="--x:1; --y:69; --w:13; --h:23">
+        <div class="grid-item" data-project-id="uoft" data-autoplay style="--x:1; --y:69; --w:13; --h:23;
+                 --nx:1; --ny:86; --nw:13; --nh:23; --nz:8">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/uoft-data.webm"></video></div>
             <div class="id-tab">uoft dsi</div>
         </div>
-        <div class="grid-item" data-project-id="dempsters" style="--x:22; --y:75; --w:16; --h:16">
+        <div class="grid-item" data-project-id="dempsters" style="--x:22; --y:75; --w:16; --h:16;
+                 --nx:22; --ny:80; --nw:16; --nh:16; --nz:9">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/dempsters11.webm"></video></div>
             <div class="id-tab">dempsters</div>
         </div>
-        <div class="grid-item" data-project-id="uoft" style="--x:36; --y:66; --w:28; --h:16">
+        <div class="grid-item" data-project-id="uoft" style="--x:36; --y:66; --w:28; --h:16;
+                 --nx:19; --ny:99; --nw:33; --nh:19; --nz:11">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/uoft-cut2.webm"></video></div>
             <div class="id-tab">uoft</div>
         </div>
-        <div class="grid-item" data-project-id="motts" style="--x:9; --y:90; --w:16; --h:16">
+        <div class="grid-item" data-project-id="motts" style="--x:9; --y:90; --w:16; --h:16;
+                 --nx:7; --ny:115; --nw:16; --nh:16; --nz:12">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/motts-top.webm"></video></div>
             <div class="id-tab">motts clamato</div>
         </div>
-        <div class="grid-item" data-project-id="tiviticare" style="--x:48; --y:85; --w:21; --h:21">
+        <div class="grid-item" data-project-id="tiviticare" style="--x:48; --y:85; --w:21; --h:21;
+                 --nx:31; --ny:121; --nw:21; --nh:21; --nz:13">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/panasonic.webm"></video></div>
             <div class="id-tab">tiviticare</div>
         </div>
-        <div class="grid-item" data-project-id="sheridan" style="--x:30; --y:105; --w:26; --h:26">
+        <div class="grid-item" data-project-id="sheridan" data-autoplay style="--x:30; --y:105; --w:26; --h:26;
+                 --nx:19; --ny:139; --nw:25; --nh:25; --nz:14">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/sheridan.webm"></video></div>
             <div class="id-tab">sheridan college</div>
         </div>
-        <div class="grid-item" data-project-id="ago" style="--x:3; --y:109; --w:16; --h:16">
+        <div class="grid-item" data-project-id="ago" style="--x:3; --y:109; --w:16; --h:16;
+                 --nx:1; --ny:133; --nw:16; --nh:16; --nz:15">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/ago11.webm"></video></div>
             <div class="id-tab">ago</div>
         </div>
-        <div class="grid-item" data-project-id="chartwell" style="--x:5; --y:128; --w:28; --h:16">
+        <div class="grid-item" data-project-id="chartwell" style="--x:5; --y:128; --w:28; --h:16;
+                 --nx:1; --ny:162; --nw:28; --nh:16; --nz:16">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/chartwell-top.webm"></video></div>
             <div class="id-tab">chartwell</div>
         </div>
-        <div class="grid-item" data-project-id="fun" style="--x:53; --y:129; --w:13; --h:16">
+        <div class="grid-item" data-project-id="fun" style="--x:53; --y:129; --w:13; --h:16;
+                 --nx:39; --ny:170; --nw:13; --nh:16; --nz:17">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/skate-top.webm"></video></div>
             <div class="id-tab">personal work</div>
         </div>
-        <div class="grid-item" data-project-id="fun" style="--x:45; --y:139; --w:9; --h:12">
+        <div class="grid-item" data-project-id="fun" style="--x:45; --y:139; --w:9; --h:12;
+                 --nx:31; --ny:181; --nw:9; --nh:12; --nz:18">
             <i class="fa-solid fa-clone multi-icon-fa"></i>
             <div class="card-media"><video data-src="assets/videos/pigeon-top.webm"></video></div>
             <div class="id-tab">personal work</div>
         </div>
     </main>
 
-<script src="js/main.js?v=1.4"></script>
+<script src="js/main.js?v=1.13"></script>
 
 </body>
 </html>

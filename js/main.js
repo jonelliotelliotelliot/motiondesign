@@ -149,7 +149,7 @@ interactiveVideos.forEach(container => {
     // --- GLOBAL STATE AND INITIALIZATION FUNCTIONS ---
     // Bump with the ?v= on style.css / main.js in the pages, so returning
     // visitors fetch fresh copies of everything main.js loads too.
-    const ASSET_VERSION = '1.4';
+    const ASSET_VERSION = '1.13';
     // On a desktop (mouse) the homepage grid starts still: each video plays
     // while its card is hovered. The header logo keeps moving regardless.
     // Touch screens can't hover, so they keep autoplaying.
@@ -158,6 +158,9 @@ interactiveVideos.forEach(container => {
     let isMotionReduced = canHover && isHomeGrid;
    // This function initializes the navbar's buttons.
     const initializeNavbar = () => {
+        // Parked: the motion toggle. Its button was taken out of navbar.html;
+        // to bring it back, put <button type="button" id="reduce-motion-btn">
+        // at the start of .navbar-icons there (its styles are still in style.css).
         const reduceMotionBtn = document.getElementById('reduce-motion-btn');
         if (reduceMotionBtn) {
             const path = window.location.pathname;
@@ -294,6 +297,9 @@ interactiveVideos.forEach(container => {
         initializeCrosshair();
         // design tool: the grid controls panel (press G). Remove this line to drop it.
         loadGridControls();
+        // design tool: the homepage layout editor (press E), only on a local copy
+        const isLocal = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+        if (isLocal && document.querySelector('.grid-container')) addScript(`js/layout-editor.js?v=${ASSET_VERSION}`);
 
          // Call the new function for the initial page load
         updateActiveNav();
@@ -332,6 +338,7 @@ interactiveVideos.forEach(container => {
                         video.play().catch(error => console.error("Video play failed:", error)); //
                     }
                     video.removeAttribute('data-src'); //
+                    syncAutoplay();
                 }
                 if (img) {
                     img.src = img.dataset.src; //
@@ -359,14 +366,45 @@ interactiveVideos.forEach(container => {
                     });
             }, { rootMargin: '0px 0px -150px 0px' });
 
+            // On desktop, the cards marked data-autoplay play by themselves
+            // while they're on screen; the rest play only while hovered.
+            // Hovering any other card pauses the autoplaying ones until the
+            // cursor leaves it. The mark is read each time, so the layout
+            // editor can switch it on and off (it fires 'autoplaychange').
+            const videoCards = [...gridItems].filter(i => i.querySelector('video'));
+            const autoplays = (item) => item.hasAttribute('data-autoplay');
+            const onScreen = new Set();
+            let hoveredCard = null;
+            const syncAutoplay = () => {
+                if (!isMotionReduced) return;   // touch screens: everything autoplays already
+                videoCards.forEach(item => {
+                    const video = item.querySelector('video');
+                    if (item === hoveredCard) return;
+                    if (autoplays(item) && onScreen.has(item) && !hoveredCard) video.play().catch(() => {});
+                    else video.pause();
+                });
+            };
+            const visibility = new IntersectionObserver((entries) => {
+                entries.forEach(e => (e.isIntersecting ? onScreen.add(e.target) : onScreen.delete(e.target)));
+                syncAutoplay();
+            });
+            videoCards.forEach(item => visibility.observe(item));
+            document.addEventListener('autoplaychange', syncAutoplay);
+
             gridItems.forEach(item => {
                 // Keep your existing observer and hover-to-play logic
                 observer.observe(item);
                 const video = item.querySelector('video');
-                if (video) {
-                    item.addEventListener('mouseenter', () => { if (isMotionReduced) video.play().catch(() => {}); });
-                    item.addEventListener('mouseleave', () => { if (isMotionReduced) video.pause(); });
-                }
+                item.addEventListener('mouseenter', () => {
+                    hoveredCard = item;
+                    if (video && isMotionReduced) video.play().catch(() => {});
+                    syncAutoplay();
+                });
+                item.addEventListener('mouseleave', () => {
+                    hoveredCard = null;
+                    if (video && isMotionReduced && !autoplays(item)) video.pause();
+                    syncAutoplay();
+                });
 
                 if (canHover) followSeeMore(item);
 
@@ -374,6 +412,11 @@ interactiveVideos.forEach(container => {
                 // fanned stack of cards (the project has more inside)
                 const icon = item.querySelector('.multi-icon-fa');
                 if (icon) icon.outerHTML = (canHover && video) ? PLAY_ICON : STACK_ICON;
+                // the play mark hides while the video is actually playing
+                if (video) {
+                    video.addEventListener('play', () => item.classList.add('is-playing'));
+                    video.addEventListener('pause', () => item.classList.remove('is-playing'));
+                }
 
                 // Get the project ID and the id-tab element
                 const projectId = item.dataset.projectId;
@@ -406,7 +449,101 @@ interactiveVideos.forEach(container => {
                     });
                 }
             });
+
+            animateLayoutChanges(isHomePage, gridItems);
+            scrollDrift(isHomePage, gridItems);
         }
+    };
+
+    // Scroll drift: each card follows the scroll a little behind the page and
+    // eases into its grid position once the page stops, with no overshoot.
+    // Every card follows at its own rate (smaller cards trail more and arrive
+    // later, and a fixed per-card variation keeps neighbours out of step), so
+    // they settle one after another rather than as a block.
+    //   DRIFT      how much of each card's lag shows (0 turns it off)
+    //   MAX_DRIFT  a soft limit on the offset, in cells
+    //   EASE       follow rates per frame, lightest card to heaviest
+    //   WEIGHT     how much each trails, lightest card to heaviest
+    // Desktop only.
+    const DRIFT = 0.1, MAX_DRIFT = 4, EASE = [0.035, 0.14], WEIGHT = [2.4, 0.3];
+    const scrollDrift = (grid, items) => {
+        if (!DRIFT || !canHover || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        items = [...items];
+        // size: 0 for the smallest card, 1 for the largest
+        const areas = items.map(el => {
+            const s = el.style;
+            return (parseFloat(s.getPropertyValue('--w')) || 1) * (parseFloat(s.getPropertyValue('--h')) || 1);
+        });
+        const lo = Math.min(...areas), hi = Math.max(...areas);
+        const y0 = window.scrollY;
+        const cards = items.map((el, i) => {
+            const size = hi > lo ? (areas[i] - lo) / (hi - lo) : 0.5;
+            const jitter = ((i * 7919) % 97) / 97;   // a fixed 0..1 per card
+            const t = Math.min(1, Math.max(0, 0.65 * Math.sqrt(size) + 0.35 * jitter));
+            return { el, rate: EASE[0] + (EASE[1] - EASE[0]) * t, weight: WEIGHT[0] + (WEIGHT[1] - WEIGHT[0]) * t, pos: y0 };
+        });
+        const visible = new Set();
+        const onScreen = new IntersectionObserver((entries) => {
+            entries.forEach(e => (e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)));
+        }, { rootMargin: '200px 0px' });
+        cards.forEach(c => onScreen.observe(c.el));
+
+        let running = false;
+        const cell = () => parseFloat(getComputedStyle(grid).gridAutoRows) || 16;
+        const tick = () => {
+            const y = window.scrollY, max = MAX_DRIFT * cell();
+            const editing = document.body.classList.contains('le-on');
+            let moving = false;
+            cards.forEach(c => {
+                // each card's own position eases toward the page's
+                c.pos = editing ? y : c.pos + (y - c.pos) * c.rate;
+                const lag = (y - c.pos) * DRIFT * c.weight;
+                let off = 0;
+                if (Math.abs(lag) > 0.2) { off = max * Math.tanh(lag / max); moving = true; }
+                else c.pos = y;
+                if (visible.has(c.el) || !off) c.el.style.translate = off ? `0 ${off.toFixed(1)}px` : '';
+            });
+            if (moving) requestAnimationFrame(tick);
+            else running = false;
+        };
+        window.addEventListener('scroll', () => {
+            if (!running) { running = true; requestAnimationFrame(tick); }
+        }, { passive: true });
+    };
+
+    // When the window crosses a breakpoint and the cards rearrange (wide,
+    // narrow, stacked), each card glides from where it was to where it now
+    // sits, rather than jumping. Positions are kept in page coordinates, taken
+    // on every resize, so the last ones are always from the old layout.
+    const animateLayoutChanges = (grid, items) => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const layoutOf = () => getComputedStyle(grid).gridTemplateColumns.trim().split(/\s+/).length;
+        const measure = () => new Map([...items].map(el => {
+            const r = el.getBoundingClientRect();
+            return [el, { x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height }];
+        }));
+        let layout = layoutOf(), rects = measure(), queued = false;
+
+        window.addEventListener('resize', () => {
+            if (queued) return;
+            queued = true;
+            requestAnimationFrame(() => {
+                queued = false;
+                const now = measure(), next = layoutOf();
+                if (next !== layout) {
+                    items.forEach(el => {
+                        const a = rects.get(el), b = now.get(el);
+                        if (!b.w || !b.h) return;
+                        el.animate([
+                            { transformOrigin: '0 0', transform: `translate(${a.x - b.x}px, ${a.y - b.y}px) scale(${a.w / b.w}, ${a.h / b.h})` },
+                            { transformOrigin: '0 0', transform: 'none' },
+                        ], { duration: 700, easing: 'cubic-bezier(.2, .7, .2, 1)' });
+                    });
+                }
+                layout = next;
+                rects = now;
+            });
+        });
     };
 
     // Rounded play triangle: the stroke, joined round, softens the corners
@@ -546,11 +683,12 @@ interactiveVideos.forEach(container => {
         document.documentElement.addEventListener('mouseleave', () => cross.classList.remove('visible'));
     };
 
-    const loadGridControls = () => {
+    const addScript = (src) => {
         const script = document.createElement('script');
-        script.src = `js/grid-controls.js?v=${ASSET_VERSION}`;
+        script.src = src;
         document.body.appendChild(script);
     };
+    const loadGridControls = () => addScript(`js/grid-controls.js?v=${ASSET_VERSION}`);
 
     // --- SCRIPT ENTRY POINT ---
 
@@ -570,6 +708,16 @@ interactiveVideos.forEach(container => {
         loadComponent('#header-placeholder', `header.html?v=${ASSET_VERSION}`)
     ]).then(() => {
         initializePage();
+    });
+
+    // The footer, on every page: after the page's <main>, or at the end.
+    const footerSlot = document.createElement('div');
+    footerSlot.id = 'footer-placeholder';
+    const main = document.querySelector('main');
+    if (main) main.after(footerSlot); else document.body.appendChild(footerSlot);
+    loadComponent('#footer-placeholder', `footer.html?v=${ASSET_VERSION}`).then(() => {
+        const year = footerSlot.querySelector('.footer-year');
+        if (year) year.textContent = new Date().getFullYear();
     });
 
     // --- NEW: Add event listener for the pageshow event ---

@@ -22,19 +22,27 @@ body.dark-mode {
 
 
 /* The page grid, shared by every page. One cell is one cell of the logo (it's
-   9 cells square); content is 68 cells wide, and the left margin (--gx) is a
-   whole number of cells, so the lines start at the page's top-left corner.
+   9 cells square); content is --cols cells wide — 68, or 51 in the narrow
+   layout below 1100px — and the left margin (--gx) is a whole number of
+   cells, so the lines start at the page's top-left corner.
    The homepage draws the lines and lays its cards out on them; every page
    lines its nav, header and content up with the same edges. */
 :root {
   --cols: 68;
-  --cell: calc(82vw / 68);
+  --col-gap: 2;   /* cells between interior columns; keeps two columns on the grid */
+  --cell: calc(82vw / var(--cols));
   --gx: 9vw;
 }
 @supports (width: round(down, 10.5px, 1px)) {
   :root {
-    --cell: min(24px, round(down, 82vw / 68, 1px));
-    --gx: round(nearest, (100vw - 68 * var(--cell)) / 2, var(--cell));
+    --cell: min(24px, round(down, 82vw / var(--cols), 1px));
+    --gx: round(nearest, (100vw - var(--cols) * var(--cell)) / 2, var(--cell));
+  }
+}
+@media (max-width: 1099px) {
+  :root {
+    --cols: 51;
+    --col-gap: 1;
   }
 }
 
@@ -186,7 +194,7 @@ body {
   background-position: var(--grid-pos);
 }
 body.dark-mode {
-  --grid-line: rgba(255, 255, 255, .06);
+  --grid-line: rgba(255, 255, 255, .04);
 }
 body.grid-on-top {
   background-image: none;
@@ -224,6 +232,7 @@ body.grid-on-top::after {
 .grid-container .grid-item {
   grid-column: var(--x) / span var(--w);
   grid-row: var(--y) / span var(--h);
+  z-index: var(--z, auto);
   pointer-events: auto;
   border-radius: 5px;
   overflow: visible;
@@ -233,6 +242,13 @@ body.grid-on-top::after {
 }
 .grid-container .grid-item.loaded {
   transform: none;
+}
+@media (max-width: 1099px) {
+  .grid-container .grid-item {
+    grid-column: var(--nx) / span var(--nw);
+    grid-row: var(--ny) / span var(--nh);
+    z-index: var(--nz, auto);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .grid-container .grid-item { transform: none; }
@@ -249,10 +265,22 @@ body.grid-on-top::after {
 }
 /* a hovered card comes to the front, showing any part another card covered */
 .grid-container .grid-item:hover {
-  z-index: 5;
+  z-index: 100;
 }
-.grid-container .card-icon {
+/* only the play mark shows on the homepage: small and faint in the corner of
+   each video card while its video is still, gone while it plays */
+.grid-container .card-icon:not(.play-icon) {
   display: none;
+}
+.grid-container .play-icon {
+  top: 10px;
+  right: 10px;
+  width: 13px;
+  height: 13px;
+  opacity: .6;
+}
+.grid-container .grid-item.is-playing .play-icon {
+  opacity: 0;
 }
 /* the card's name, on hover, in a small solid label just under its
    bottom-left corner — solid so it stays readable over another card */
@@ -457,7 +485,7 @@ a:hover {
 }
 .media-container {
   display: flex;
-  gap: calc(2 * var(--cell))
+  gap: calc(var(--col-gap) * var(--cell))
 }
 .media-container.two-column {
   flex-direction: row
@@ -573,6 +601,162 @@ iframe {
 .code-display code {
     white-space: pre-wrap !important;   /* Preserves whitespace and wraps */
     word-break: break-all !important;   /* ADDED: Forcefully breaks long strings like URLs */
+}
+
+/* RÉSUMÉ (resume.html) — on screen, just the letter, from the logo's left
+   edge; the nav and footer carry the contact details. Printed, a contact
+   column (.print-only) joins it on the left. */
+.resume {
+  width: calc(var(--cols) * var(--cell));
+  margin: calc(2 * var(--cell)) var(--gx) 0;
+  font-size: .9rem;
+  line-height: 1.6;
+}
+.resume-contact dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+  margin: 0;
+  font-size: .75rem;
+}
+.resume-contact dt { font-weight: 600; }
+.resume-contact dd { margin: 0; }
+.resume-letter {
+  max-width: calc(44 * var(--cell));
+}
+.resume-letter p {
+  margin: 0 0 1.1em;
+  font-size: inherit;
+  letter-spacing: 0;
+}
+.resume-letter .resume-lede {
+  margin: 1.4em 0;
+  color: var(--link-hover-color);
+  font-size: max(1.25rem, 1.6 * var(--cell));
+  line-height: 1.25;
+  letter-spacing: -.01em;
+}
+.resume-letter mark {
+  padding: 0 .2em;
+  background: var(--link-hover-color);
+  color: #fff;
+  font-weight: 700;
+}
+.resume-letter h2 {
+  margin: 2em 0 .4em;
+  font-size: inherit;
+  font-weight: 700;
+}
+.resume-skills {
+  margin: 0 0 1.4em;
+  padding: 0;
+  list-style: none;
+}
+.resume-skills li::before {
+  content: "· ";
+}
+.print-only {
+  display: none;
+}
+
+/* printing the résumé (or saving it as a PDF from the browser): just the
+   logo, the contact details and the letter, in black on white */
+@media print {
+  body.resume-page {
+    background: #fff !important;
+    color: #000;
+  }
+  .resume-page .navbar,
+  .resume-page #footer-placeholder,
+  .resume-page .crosshair,
+  .resume-page .grid-panel {
+    display: none !important;
+  }
+  .resume-page .header,
+  .resume-page .resume {
+    width: auto;
+    margin: 0;
+  }
+  .resume-page .header { padding: 0 0 24px; }
+  .resume-page .header-image { width: 110px; }
+  .resume-page .print-only {
+    display: block;
+  }
+  .resume-page .resume {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+    column-gap: 32px;
+    font-size: 10.5pt;
+  }
+  .resume-page .resume-letter .resume-lede { font-size: 17pt; }
+  .resume-page a { color: #000; }
+  .resume-page mark { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
+
+/* FOOTER (footer.html, added to every page by main.js) — on the content's
+   edges, with its rows in whole cells */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }   /* "back to top" */
+}
+.footer {
+  box-sizing: border-box;
+  width: calc(var(--cols) * var(--cell));
+  margin: calc(4 * var(--cell)) var(--gx) 0;
+  padding: calc(3 * var(--cell)) 0 calc(2 * var(--cell));
+  border-top: 1px solid var(--text-color);
+}
+.footer a {
+  text-decoration: none;
+}
+.footer-hello p {
+  margin: 0 0 calc(.5 * var(--cell));
+  font-size: .7rem;
+  opacity: .6;
+}
+.footer-hello a {
+  font-size: max(1.4rem, 2.5 * var(--cell));
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+.footer-links,
+.footer-base {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--cell);
+  font-size: .7rem;
+}
+.footer-links {
+  margin-top: calc(4 * var(--cell));
+}
+.footer-links nav {
+  display: flex;
+  gap: 12px;
+}
+.footer-base {
+  margin-top: var(--cell);
+  opacity: .6;
+}
+
+/* phones: the résumé and footer in one column (after their desktop rules,
+   so these win) */
+@media (max-width: 768px) {
+  .resume {
+    width: auto;
+    margin: 0 9vw;
+  }
+  .footer {
+    width: auto;
+    margin: calc(4 * var(--cell)) 9vw 0;
+    text-align: center;
+  }
+  .footer-hello a { font-size: 1.1rem; }
+  .footer-links,
+  .footer-base {
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer-links nav { justify-content: center; }
 }
 
 /* The background container for animations */
