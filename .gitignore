@@ -1,0 +1,5 @@
+# Mac Finder files
+.DS_Store
+
+# local tool settings (Claude Code's preview)
+.claude/
