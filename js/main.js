@@ -149,7 +149,7 @@ interactiveVideos.forEach(container => {
     // --- GLOBAL STATE AND INITIALIZATION FUNCTIONS ---
     // Bump with the ?v= on style.css / main.js in the pages, so returning
     // visitors fetch fresh copies of everything main.js loads too.
-    const ASSET_VERSION = '1.18';
+    const ASSET_VERSION = '1.20';
     // On a desktop (mouse) the homepage grid starts still: each video plays
     // while its card is hovered. The header logo keeps moving regardless.
     // Touch screens can't hover, so they keep autoplaying.
@@ -351,7 +351,7 @@ interactiveVideos.forEach(container => {
             // Cards that come into view together (the first screen on load, or
             // a few at once while scrolling) fade and rise in turn, top to
             // bottom, rather than all at once.
-            const STAGGER = 80, MAX_STAGGER = 800;   // ms
+            const STAGGER = 60, MAX_STAGGER = 600;   // ms
             const observer = new IntersectionObserver((entries, observer) => {
                 entries
                     .filter(entry => entry.isIntersecting)
@@ -366,7 +366,7 @@ interactiveVideos.forEach(container => {
                         lazyLoadMedia(item);
                         observer.unobserve(item);
                     });
-            }, { rootMargin: '0px 0px -150px 0px' });
+            }, { rootMargin: '0px 0px -24px 0px' });   // in as soon as a card peeks into view
 
             // On desktop, the cards marked data-autoplay play by themselves
             // while they're on screen; the rest play only while hovered.

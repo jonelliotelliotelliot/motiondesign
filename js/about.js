@@ -4,15 +4,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     if (!window.gsap || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    // the bubble wanders a little around the circle's upper right, always
+    // overlapping its edge
     const bubble = document.querySelector('.about-bubble');
+    const circle = document.querySelector('.about-character');
     const wander = () => gsap.to(bubble, {
-        x: gsap.utils.random(0, 300),
-        y: gsap.utils.random(0, 300),
+        x: gsap.utils.random(-0.03, 0.03) * circle.offsetWidth,
+        y: gsap.utils.random(-0.04, 0.1) * circle.offsetWidth,
         duration: gsap.utils.random(2, 3),
         ease: 'power1.inOut',
         onComplete: wander,
     });
-    if (bubble) wander();
+    if (bubble && circle) wander();
 
     // each emoji drifts to a random spot in the window, then another, forever
     const emojis = document.querySelectorAll('.about-emojis .emoji');

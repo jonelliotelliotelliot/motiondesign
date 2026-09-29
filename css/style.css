@@ -233,12 +233,13 @@ body.grid-on-top::after {
   grid-column: var(--x) / span var(--w);
   grid-row: var(--y) / span var(--h);
   z-index: var(--z, auto);
+  isolation: isolate;   /* its own layer: nothing inside (like the play icon) shows over a card on top */
   pointer-events: auto;
   border-radius: 5px;
   overflow: visible;
   background: none;
   transform: translateY(calc(.75 * var(--cell)));
-  transition: opacity .7s ease-out, transform .9s cubic-bezier(.2, .7, .2, 1);
+  transition: opacity .5s ease-out, transform .7s cubic-bezier(.2, .7, .2, 1);
 }
 .grid-container .grid-item.loaded {
   transform: none;
@@ -715,6 +716,7 @@ iframe {
   justify-content: center;
 }
 .about-me {
+  position: relative;
   padding-top: 40px;   /* clear of the nav */
 }
 .about-character {
@@ -729,10 +731,13 @@ iframe {
   height: 100%;
   object-fit: cover;
 }
+/* the "about me" bubble sits at the circle's upper right, running a little
+   past its edge, and wanders a little around there (js/about.js) */
 .about-bubble {
-  position: fixed;
-  top: 60px;
-  width: 200px;
+  position: absolute;
+  top: calc(40px + 16%);
+  left: 66%;
+  width: min(200px, 30%);
   height: auto;   /* not the global img/video fill */
   z-index: 400;
 }
@@ -861,7 +866,7 @@ iframe {
     width: auto;
     margin: calc(4 * var(--cell)) 9vw 0;
   }
-  .footer-hello a { font-size: 1.1rem; }
+  .footer-hello a { font-size: clamp(1.1rem, 5.2vw, 1.3rem); }   /* up from 1.1rem, still fitting a 320px phone */
   .footer-links,
   .footer-base {
     flex-direction: column;
