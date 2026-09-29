@@ -328,9 +328,14 @@
   }, true);
 
   // --- keys ---
+  // E on its own toggles the editor; an E typed within a word (like "lauren",
+  // which opens the logo colour picker) doesn't
+  let lastLetter = 0;
   document.addEventListener('keydown', (e) => {
     const typing = e.target.closest?.('input, textarea, select, [contenteditable]');
-    if ((e.key === 'e' || e.key === 'E') && !typing && !e.metaKey && !e.ctrlKey && !e.altKey) {
+    const now = performance.now(), inWord = now - lastLetter < 600;
+    if (/^[a-z]$/i.test(e.key)) lastLetter = now;
+    if ((e.key === 'e' || e.key === 'E') && !typing && !inWord && !e.metaKey && !e.ctrlKey && !e.altKey) {
       return toggle();
     }
     if (!on || typing) return;

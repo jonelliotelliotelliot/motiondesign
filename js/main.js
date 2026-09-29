@@ -149,7 +149,7 @@ interactiveVideos.forEach(container => {
     // --- GLOBAL STATE AND INITIALIZATION FUNCTIONS ---
     // Bump with the ?v= on style.css / main.js in the pages, so returning
     // visitors fetch fresh copies of everything main.js loads too.
-    const ASSET_VERSION = '1.15';
+    const ASSET_VERSION = '1.17';
     // On a desktop (mouse) the homepage grid starts still: each video plays
     // while its card is hovered. The header logo keeps moving regardless.
     // Touch screens can't hover, so they keep autoplaying.
@@ -297,6 +297,8 @@ interactiveVideos.forEach(container => {
         initializeCrosshair();
         // design tool: the grid controls panel (press G). Remove this line to drop it.
         loadGridControls();
+        // temporary: the logo colour picker for Lauren (type "lauren"). Remove this line to drop it.
+        addScript(`js/lauren.js?v=${ASSET_VERSION}`);
         // design tool: the homepage layout editor (press E), only on a local copy
         const isLocal = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
         if (isLocal && document.querySelector('.grid-container')) addScript(`js/layout-editor.js?v=${ASSET_VERSION}`);
