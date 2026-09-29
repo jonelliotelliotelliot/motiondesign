@@ -17,7 +17,7 @@
   const LINES = ["JON", "ELL", "IOT"];
 
   const state = {
-    spacing: 14,           // gap between letters and lines, svg units (a cell is 100)
+    spacing: 0,            // gap between letters and lines, svg units (a cell is 100); 0 keeps every cell on the page grid
     playing: true,
     mode: "loop",
     speed: 1,

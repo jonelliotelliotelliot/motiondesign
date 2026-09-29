@@ -149,7 +149,7 @@ interactiveVideos.forEach(container => {
     // --- GLOBAL STATE AND INITIALIZATION FUNCTIONS ---
     // Bump with the ?v= on style.css / main.js in the pages, so returning
     // visitors fetch fresh copies of everything main.js loads too.
-    const ASSET_VERSION = '1.1';
+    const ASSET_VERSION = '1.4';
     // On a desktop (mouse) the homepage grid starts still: each video plays
     // while its card is hovered. The header logo keeps moving regardless.
     // Touch screens can't hover, so they keep autoplaying.
@@ -291,6 +291,9 @@ interactiveVideos.forEach(container => {
         initializeNavbar();
         initializeHeader();
         initializeAutoplayVideoPosters();
+        initializeCrosshair();
+        // design tool: the grid controls panel (press G). Remove this line to drop it.
+        loadGridControls();
 
          // Call the new function for the initial page load
         updateActiveNav();
@@ -336,14 +339,24 @@ interactiveVideos.forEach(container => {
                 }
             };
 
+            // Cards that come into view together (the first screen on load, or
+            // a few at once while scrolling) fade and rise in turn, top to
+            // bottom, rather than all at once.
+            const STAGGER = 80, MAX_STAGGER = 800;   // ms
             const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('loaded');
-                        lazyLoadMedia(entry.target);
-                        observer.unobserve(entry.target);
-                    }
-                });
+                entries
+                    .filter(entry => entry.isIntersecting)
+                    .sort((a, b) => (a.boundingClientRect.top - b.boundingClientRect.top) ||
+                                    (a.boundingClientRect.left - b.boundingClientRect.left))
+                    .forEach((entry, i) => {
+                        const item = entry.target;
+                        item.style.transitionDelay = `${Math.min(i * STAGGER, MAX_STAGGER)}ms`;
+                        // clear it once in, so hover transitions don't wait
+                        item.addEventListener('transitionend', () => { item.style.transitionDelay = ''; }, { once: true });
+                        item.classList.add('loaded');
+                        lazyLoadMedia(item);
+                        observer.unobserve(item);
+                    });
             }, { rootMargin: '0px 0px -150px 0px' });
 
             gridItems.forEach(item => {
@@ -474,6 +487,69 @@ interactiveVideos.forEach(container => {
             target.y = pos.y + out.y * NUDGE;
             run();
         });
+    };
+
+    // Homepage cursor: a thin crosshair in place of the arrow. It follows the
+    // mouse exactly, or with CROSSHAIR_SNAP (or ?snap in the address, or the
+    // grid controls' snap switch, which sets <body data-crosshair="snap">) it
+    // glides from one grid intersection to the next. Mouse only.
+    const CROSSHAIR_SNAP = new URLSearchParams(window.location.search).has('snap');
+    const snapOn = () => CROSSHAIR_SNAP || document.body.dataset.crosshair === 'snap';
+    const initializeCrosshair = () => {
+        const grid = document.querySelector('.grid-container');
+        if (!canHover || !document.body.classList.contains('home') || !grid) return;
+        const cross = document.createElement('div');
+        cross.className = 'crosshair';
+        cross.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(cross);
+        document.body.classList.add('has-crosshair');
+
+        const mouse = { x: 0, y: 0 }, pos = { x: 0, y: 0 };
+        let running = false, placed = false;
+        const place = () => { cross.style.transform = `translate(${pos.x}px, ${pos.y}px)`; };
+
+        // the grid intersection nearest the mouse; the lines run from the
+        // cards' grid, which starts on a line
+        const snapped = () => {
+            const cell = parseFloat(getComputedStyle(grid).gridAutoRows);
+            const r = grid.getBoundingClientRect();
+            if (!(cell > 0)) return { x: mouse.x, y: mouse.y };
+            return {
+                x: r.left + Math.round((mouse.x - r.left) / cell) * cell,
+                y: r.top + Math.round((mouse.y - r.top) / cell) * cell,
+            };
+        };
+        const tick = () => {
+            const t = snapped();
+            pos.x += (t.x - pos.x) * 0.35;
+            pos.y += (t.y - pos.y) * 0.35;
+            if (Math.abs(t.x - pos.x) + Math.abs(t.y - pos.y) < 0.1) {
+                pos.x = t.x; pos.y = t.y; running = false;
+            }
+            place();
+            if (running) requestAnimationFrame(tick);
+        };
+        const update = () => {
+            if (!snapOn()) { pos.x = mouse.x; pos.y = mouse.y; place(); return; }
+            if (!placed) { Object.assign(pos, snapped()); placed = true; place(); }
+            if (!running) { running = true; requestAnimationFrame(tick); }
+        };
+
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            cross.classList.add('visible');
+            update();
+        });
+        // scrolling moves the grid under a still mouse
+        window.addEventListener('scroll', () => { if (placed && snapOn()) update(); }, { passive: true });
+        document.documentElement.addEventListener('mouseleave', () => cross.classList.remove('visible'));
+    };
+
+    const loadGridControls = () => {
+        const script = document.createElement('script');
+        script.src = `js/grid-controls.js?v=${ASSET_VERSION}`;
+        document.body.appendChild(script);
     };
 
     // --- SCRIPT ENTRY POINT ---
