@@ -149,7 +149,7 @@ interactiveVideos.forEach(container => {
     // --- GLOBAL STATE AND INITIALIZATION FUNCTIONS ---
     // Bump with the ?v= on style.css / main.js in the pages, so returning
     // visitors fetch fresh copies of everything main.js loads too.
-    const ASSET_VERSION = '1.13';
+    const ASSET_VERSION = '1.15';
     // On a desktop (mouse) the homepage grid starts still: each video plays
     // while its card is hovered. The header logo keeps moving regardless.
     // Touch screens can't hover, so they keep autoplaying.
@@ -643,7 +643,9 @@ interactiveVideos.forEach(container => {
 
         const mouse = { x: 0, y: 0 }, pos = { x: 0, y: 0 };
         let running = false, placed = false;
-        const place = () => { cross.style.transform = `translate(${pos.x}px, ${pos.y}px)`; };
+        // positioned with `translate`, which the browser applies after the
+        // hover `scale`, so the crosshair shrinks in place
+        const place = () => { cross.style.translate = `${pos.x}px ${pos.y}px`; };
 
         // the grid intersection nearest the mouse; the lines run from the
         // cards' grid, which starts on a line
@@ -676,6 +678,7 @@ interactiveVideos.forEach(container => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
             cross.classList.add('visible');
+            cross.classList.toggle('over', !!e.target.closest?.('a, button, label, input, .grid-item'));
             update();
         });
         // scrolling moves the grid under a still mouse

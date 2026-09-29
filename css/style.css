@@ -3,7 +3,7 @@
   --bg-color: #fff;
   --text-color: #333;
   --nav-bg-color: #eee;
-  --grid-item-bg-color: #d81111;
+  --grid-item-bg-color: #f1f3f7;   /* placeholder behind media while it loads */
   --link-color: #333;
   --link-hover-color: #ffa800;
   --code-bg-color: #2d2d2d;
@@ -14,7 +14,7 @@ body.dark-mode {
   --bg-color: rgb(26, 26, 26);
   --text-color: #f0f0f0;
   --nav-bg-color: #2a2a2a;
-  --grid-item-bg-color: #333;
+  --grid-item-bg-color: #242424;
   --link-color: #f0f0f0;
   --code-bg-color: #1e1e1e;
   --caption-bg: #000;
@@ -224,7 +224,7 @@ body.grid-on-top::after {
   pointer-events: none;       /* ...but only the cards take the pointer */
   width: calc(var(--cols) * var(--cell));
   margin: calc(-9 * var(--cell)) var(--gx) 0;
-  padding-bottom: calc(8 * var(--cell));
+  padding-bottom: calc(4 * var(--cell));
 }
 /* The card itself doesn't clip, so its caption can hang below it; the media
    is clipped by .card-media instead. Cards rise a little as they fade in
@@ -327,8 +327,12 @@ body.grid-on-top::after {
   z-index: 3000;
   mix-blend-mode: difference;
   opacity: 0;
-  transition: opacity .2s ease-in-out;
-  will-change: transform;
+  transition: opacity .2s ease-in-out, scale .2s ease-out;
+  will-change: translate, scale;
+}
+/* a little smaller over links, buttons and cards */
+.crosshair.over {
+  scale: .65;
 }
 .crosshair.visible {
   opacity: 1;
@@ -693,6 +697,104 @@ iframe {
   .resume-page mark { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
 
+/* ABOUT (about.html) — the character in an orange circle, with the text
+   below it; on wide screens the text overlaps the circle's lower right.
+   The wide layout is set in proportions of its 1260px design, so it scales
+   down rather than slipping off screen. */
+.about {
+  width: min(700px, 80vw);
+  min-width: 320px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+.about-me {
+  padding-top: 40px;   /* clear of the nav */
+}
+.about-character {
+  aspect-ratio: 1;     /* square from the first frame, so the circle is round */
+  overflow: hidden;
+  background-color: var(--link-hover-color);
+  clip-path: circle(41% at 50% 50%);
+}
+.about-character video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about-bubble {
+  position: fixed;
+  top: 60px;
+  width: 200px;
+  height: auto;   /* not the global img/video fill */
+  z-index: 400;
+}
+.about-text {
+  position: relative;
+  z-index: 1;
+  background-color: var(--bg-color);
+}
+.about-text p {
+  margin: 0;
+  letter-spacing: normal;
+  color: var(--text-color);
+}
+.about-text .about-lede {
+  font-size: 2.4rem;
+  line-height: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.about-text .about-more {
+  padding-top: 20px;
+  font-size: 1.3rem;
+  line-height: 1.7rem;
+}
+.about-text .accent {
+  color: var(--link-hover-color);
+}
+.about-emojis {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  pointer-events: none;
+}
+.about-emojis .emoji {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 3rem;
+  user-select: none;
+}
+@media (min-width: 1200px) {
+  .about {
+    width: min(1260px, 100vw - 64px);
+  }
+  .about-me {
+    width: 55.56%;             /* the 700px circle */
+  }
+  .about-text {
+    width: 57.14%;             /* 720px */
+    margin: -22.7% 0 0 42.86%; /* up over the circle, from 540px in */
+    padding: 10px;
+    box-sizing: border-box;
+  }
+}
+@media (max-width: 420px) and (orientation: portrait) {
+  .about-text .about-lede {
+    font-size: 1.9rem;
+    line-height: 2.1rem;
+  }
+  .about-text .about-more {
+    font-size: 1rem;
+    line-height: 1.3rem;
+  }
+  .about-emojis .emoji {
+    font-size: 2rem;
+  }
+}
+
 /* FOOTER (footer.html, added to every page by main.js) — on the content's
    edges, with its rows in whole cells */
 @media (prefers-reduced-motion: no-preference) {
@@ -748,15 +850,13 @@ iframe {
   .footer {
     width: auto;
     margin: calc(4 * var(--cell)) 9vw 0;
-    text-align: center;
   }
   .footer-hello a { font-size: 1.1rem; }
   .footer-links,
   .footer-base {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
-  .footer-links nav { justify-content: center; }
 }
 
 /* The background container for animations */
