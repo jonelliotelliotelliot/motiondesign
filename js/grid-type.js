@@ -32,8 +32,10 @@
 
     // Hairline between every cell, not just where the letterform calls for one —
     // the whole grid shows through as tiling. At 0 the cells overlap by a hair
-    // instead, so joined material reads as one solid mass.
-    cellSeam: 0.02,          // in cells
+    // instead, so joined material reads as one solid mass. In screen pixels,
+    // so it's the same hairline whatever size the type is drawn at: glyphSVG
+    // is told how big a cell will be (opts.cellPx) and works out the rest.
+    cellSeam: 0.5,           // px on screen
 
     // How the diagonal strokes (K R V X) are cut into modules.
     //   steps — one capsule per step between two cell centres; a step crosses
@@ -273,7 +275,7 @@
 
   // Build the drawable shape for every cell of a glyph, plus the counters to be
   // punched out of it.
-  function glyphShapes(ch) {
+  function glyphShapes(ch, seam) {
     const g = parseGlyph(ch);
     const { H, W } = g;
     const m = cutMetrics(g);
@@ -314,7 +316,7 @@
         // and push it out over any edge it shares with a joined one. A joined
         // edge always has square corners, so the overlap can never alter the
         // silhouette.
-        const join = CONFIG.cellSeam > 0 ? CONFIG.cellSeam * S / 2 : -SEAM;
+        const join = seam > 0 ? seam * S / 2 : -SEAM;
         const iT = cutTop(c, r)    ? m.gapH[r - 1][c] / 2 : (solid(c, r - 1) ? join : 0);
         const iB = cutBottom(c, r) ? m.gapH[r][c] / 2     : (solid(c, r + 1) ? join : 0);
         const iL = cutLeft(c, r)   ? m.gapV[c - 1][r] / 2 : (solid(c - 1, r) ? join : 0);
@@ -484,7 +486,10 @@
     opts = opts || {};
     const modules = opts.modules || CONFIG.strokeModules;
     const showGrid = opts.showGrid !== undefined ? opts.showGrid : CONFIG.showGrid;
-    const { shapes, steps, punches, W, H } = glyphShapes(ch);
+    // the seam in cells, from the pixels it should be on screen: opts.cellPx
+    // is how wide one cell will be drawn (the specimen size if not given)
+    const seam = CONFIG.cellSeam / (opts.cellPx || CONFIG.glyphSize / 3);
+    const { shapes, steps, punches, W, H } = glyphShapes(ch, seam);
     const svg = document.createElementNS(SVGNS, "svg");
     svg.setAttribute("class", "glyph");
     svg.setAttribute("viewBox", "0 0 " + (W * S) + " " + (H * S));
@@ -587,7 +592,7 @@
         const { col: c, row: r } = tile;
         // interior edges are pushed out by a hair (or pulled in, to show the
         // seam) exactly as the square cells are; the glyph's outer edges stay put
-        const join = CONFIG.cellSeam > 0 ? CONFIG.cellSeam * S / 2 : -SEAM;
+        const join = seam > 0 ? seam * S / 2 : -SEAM;
         const iL = c > 0 ? join : 0, iR = c < W - 1 ? join : 0;
         const iT = r > 0 ? join : 0, iB = r < H - 1 ? join : 0;
         const box = { x: c * S + iL, y: r * S + iT, w: S - iL - iR, h: S - iT - iB };

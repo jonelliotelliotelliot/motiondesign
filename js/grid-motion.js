@@ -25,7 +25,7 @@
     gap: 2,                // seconds the word rests between scenes
     pointer: true,
     reach: 230,            // svg units
-    tint: 0,               // svg units — how far the hover palette reaches (0 = off)
+    tint: 420,             // svg units — how far the hover palette reaches (0 = off)
     puzzle: "forward",     // forward | reverse — how the puzzle scene solves
     colour: "solid",       // solid | palette | gradient (see grid-type.js)
     loop: null,            // scene name -> in the loop; filled in from the scenes below
@@ -123,6 +123,15 @@
       return getComputedStyle(host).getPropertyValue(name).trim();
     }
 
+    // How wide one cell of the type is drawn, in px — the seam between cells
+    // is a fixed number of pixels (CONFIG.cellSeam), so the glyphs need it.
+    // 0 until the svg has a size.
+    let builtCellPx = 0;
+    function cellPx() {
+      const w = svg.getBoundingClientRect().width;
+      return L && w ? w / L.width * S : 0;
+    }
+
     // Every glyph's modules gathered into one SVG so they can all move in the
     // same space. Each module keeps its data-row / data-col and gets a place
     // in the word-wide module grid (gx across, gy down).
@@ -138,6 +147,7 @@
       };
       L.width = perLine * L.pitch - gap;
       L.height = LINES.length * L.line - gap;
+      builtCellPx = cellPx();
       svg.setAttribute("viewBox", "0 0 " + L.width + " " + L.height);
       svg.innerHTML = "";
       const keepPush = new Map(modules.map(m => [m.key, m.push]));
@@ -159,7 +169,7 @@
         [...word].forEach((ch, i) => {
           if (!GLYPHS[ch]) return;          // a space, or a character the type doesn't have
           const letter = line * perLine + i;
-          const glyph = glyphSVG(ch, { showGrid: false });
+          const glyph = glyphSVG(ch, { showGrid: false, cellPx: builtCellPx || undefined });
           const wrap = document.createElementNS(SVGNS, "g");
           const ox = i * L.pitch, oy = line * L.line;
           wrap.setAttribute("transform", "translate(" + ox + " " + oy + ")");
@@ -793,6 +803,13 @@
     // START
     // ============================================================
     build();
+    // drawn at a new size: rebuild, so the seam stays the same in pixels
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(() => {
+        const px = cellPx();
+        if (px && Math.abs(px - builtCellPx) > px * 0.01) build();
+      }).observe(svg);
+    }
     begin(nextScene());
     if (opts.autoplay === false || reducedMotion) rest();   // reduced motion: start on the word at rest
     else wake();

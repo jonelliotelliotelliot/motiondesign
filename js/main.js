@@ -158,7 +158,7 @@ interactiveVideos.forEach(container => {
     // --- GLOBAL STATE AND INITIALIZATION FUNCTIONS ---
     // Bump with the ?v= on style.css / main.js in the pages, so returning
     // visitors fetch fresh copies of everything main.js loads too.
-    const ASSET_VERSION = '1.21';
+    const ASSET_VERSION = '1.22';
     // On a desktop (mouse) the homepage grid starts still: each video plays
     // while its card is hovered. The header logo keeps moving regardless.
     // Touch screens can't hover, so they keep autoplaying.

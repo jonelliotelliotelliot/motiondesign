@@ -20,19 +20,16 @@
   // ============================================================
   const hero = window.GridMotion.create($("#type-word"), {
     host: $(".type-hero"),
-    state: {
-      gap: 0.35,     // seconds the name rests between scenes
-      tint: 420,     // the header logo's hover colours, at the same reach
-    },
     onFrame: () => updatePanel(),
   });
   const state = hero.state;   // what the panel changes; every other word falls back on it
 
   // Fit a word to the page grid: k page cells to each cell of the type, as
   // big as fits in the main column (and no bigger than the name).
-  const mainCells = () => parseInt(getComputedStyle($(".type")).getPropertyValue("--main"), 10) || 45;
+  const cssCells = name => parseInt(getComputedStyle($(".type")).getPropertyValue(name), 10);
   function fit(svg, perLine) {
-    const k = Math.max(1, Math.min(5, Math.floor(mainCells() / (3 * perLine))));
+    const most = Math.floor((cssCells("--hero") || 36) / 9);
+    const k = Math.max(1, Math.min(most, Math.floor((cssCells("--main") || 45) / (3 * perLine))));
     svg.style.width = "calc(" + (3 * perLine * k) + " * var(--cell))";
   }
 
@@ -89,14 +86,17 @@
   // ============================================================
   function drawFigures() {
     document.querySelectorAll(".type-figure-glyphs").forEach(host => {
+      // how big a figure is drawn (set in type.css), for the seam
+      host.innerHTML = "<svg></svg>";
+      const cellPx = host.firstChild.getBoundingClientRect().width / 3 || undefined;
       host.innerHTML = "";
       const saved = { seam: CONFIG.cellSeam, mode: CONFIG.colourMode, ink: CONFIG.glyphColor };
       // pull the diagonals' pieces apart a little, to show where they're cut
-      if (host.hasAttribute("data-explode")) CONFIG.cellSeam = Math.max(saved.seam, 0.06);
+      if (host.hasAttribute("data-explode") && cellPx) CONFIG.cellSeam = saved.seam + 0.05 * cellPx;
       CONFIG.colourMode = "solid";
       CONFIG.glyphColor = "currentColor";
       [...host.dataset.glyphs].forEach(ch => {
-        const svg = glyphSVG(ch, { showGrid: true });
+        const svg = glyphSVG(ch, { showGrid: true, cellPx });
         svg.setAttribute("role", "img");
         svg.setAttribute("aria-label", ch);
         host.appendChild(svg);
@@ -130,7 +130,7 @@
   window.addEventListener("load", snapText);
   // Poppins arrives after the page does, and changes how tall the text is
   if (document.fonts) document.fonts.addEventListener("loadingdone", snapText);
-  window.addEventListener("resize", () => { snapText(); setTryWord(); });
+  window.addEventListener("resize", () => { snapText(); setTryWord(); drawFigures(); });
 
   // ============================================================
   // CONTROL PANEL
@@ -166,14 +166,15 @@
       { kind: "range", label: "speed", key: "speed", min: 0.25, max: 2, step: 0.05, format: v => two(v) + "\u00d7" },
       { kind: "range", label: "gap", key: "gap", min: 0, max: 4, step: 0.05, format: v => two(v) + "s" },
     ]},
-    // what changes here redraws every word on the page; values in cells of the type
+    // what changes here redraws every word on the page; values in cells of the
+    // type, except the seam, which is in screen pixels
     { title: "Geometry", closed: true, controls: [
       { kind: "range", label: "corners", obj: CONFIG, key: "cornerRadius", min: 0, max: 1, step: 0.02, format: two, after: redraw },
       { kind: "range", label: "accent", obj: CONFIG, key: "accentRadius", min: 0, max: 1, step: 0.05, format: v => two(v) + "\u00d7", after: redraw },
       { kind: "range", label: "hairline", obj: CONFIG, key: "gapWidth", min: 0, max: 0.3, step: 0.005, format: v => v.toFixed(3), after: redraw },
       { kind: "range", label: "counter", obj: CONFIG, key: "counterWidth", min: 0.02, max: 0.6, step: 0.02, format: two, after: redraw },
       { kind: "range", label: "counter radius", obj: CONFIG, key: "counterRadius", min: 0, max: 1, step: 0.02, format: two, after: redraw },
-      { kind: "range", label: "seam", obj: CONFIG, key: "cellSeam", min: 0, max: 0.12, step: 0.005, format: v => v.toFixed(3), after: redraw },
+      { kind: "range", label: "seam", obj: CONFIG, key: "cellSeam", min: 0, max: 3, step: 0.1, format: v => v.toFixed(1) + "px", after: redraw },
       { kind: "seg", label: "gap ends", obj: CONFIG, key: "cutStyle", options: [["auto", "auto"], ["hard", "hard"], ["soft", "soft"]], after: redraw },
       { kind: "button", text: "reset", action: () => {
         Object.assign(CONFIG, geometryDefaults);

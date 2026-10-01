@@ -12,9 +12,5 @@
   window.jonelliotLogo = window.GridMotion.create(svg, {
     host: svg.closest(".header") || svg.parentNode,
     shuffle: true,
-    state: {
-      gap: 2,        // seconds the name rests between scenes
-      tint: 420,     // svg units — how far the hover palette reaches
-    },
   });
 })();
