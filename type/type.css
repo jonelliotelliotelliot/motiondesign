@@ -1,0 +1,374 @@
+/* ABOUT THE TYPE (type/index.html). Laid out on the page grid like the
+   homepage: everything is sized in cells (--cell), and type.js rounds each
+   block of text up to a whole number of cells, so the words and figures
+   below it land on the grid lines.
+   Wide: the page's words in a 45-cell column (the name at 5 cells per
+   cell of the type), the panel beside them. Narrow (below 1100px): a 27-cell
+   column. Phones: one column. */
+
+.type-page {
+  overflow-x: clip;   /* scenes fling pieces sideways; never widen the page */
+}
+.type {
+  --main: 45;         /* the main column, in cells */
+  --measure: 36;      /* the widest a block of text runs, in cells */
+  --gutter: 3;
+  width: calc(var(--cols) * var(--cell));
+  margin: 0 var(--gx);
+  padding: calc(8 * var(--cell)) 0 calc(6 * var(--cell));
+  color: var(--text-color);
+}
+@media (max-width: 1099px) {
+  .type {
+    --main: 27;
+    --measure: 27;
+    --gutter: 2;
+  }
+}
+
+/* ---------- text ---------- */
+/* flow-root keeps the margins inside, so type.js measures all of a block */
+.type-text {
+  display: flow-root;
+  max-width: calc(var(--measure) * var(--cell));
+}
+.type-text > :last-child { margin-bottom: 0; }
+.type h1 {
+  margin: 0 0 .6em;
+  font-size: max(1.1rem, 1.5 * var(--cell));
+}
+.type h2 {
+  margin: 0 0 .4em;
+  font-size: max(1rem, 1.2 * var(--cell));
+  font-weight: 700;
+  letter-spacing: -.5px;
+}
+.type h3 {
+  margin: 0 0 .3em;
+  font-size: .9rem;
+  font-weight: 600;
+}
+.type p {
+  margin: 0 0 1em;
+  font-size: .8rem;
+  line-height: 1.6;
+  letter-spacing: normal;
+}
+.type .type-lede {
+  font-size: max(1rem, 1.1 * var(--cell));
+  line-height: 1.45;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.type .type-note,
+.type .type-hint {
+  opacity: .6;
+}
+.type .type-hint {
+  margin: calc(2 * var(--cell)) 0 0;
+}
+@media (hover: hover) { .touch-only { display: none; } }
+@media (hover: none) { .hover-only { display: none; } }
+
+/* ---------- layout ---------- */
+.type-layout {
+  display: grid;
+  grid-template-columns: calc(var(--main) * var(--cell)) 1fr;
+  column-gap: calc(var(--gutter) * var(--cell));
+  margin-top: calc(3 * var(--cell));
+}
+.type-layout > section {
+  grid-column: 1;
+  min-width: 0;
+}
+.type-section {
+  margin-top: calc(6 * var(--cell));
+}
+.type-section > .type-text {
+  margin-bottom: calc(2 * var(--cell));
+}
+
+/* the name, as big as the column: 45 cells is 5 page cells per cell of the type */
+.type-hero {
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+#type-word {
+  display: block;
+  width: calc(var(--main) * var(--cell));
+  height: auto;
+  aspect-ratio: 1;
+  overflow: visible;
+}
+
+/* ---------- figures (how it's built) ---------- */
+.type-anatomy {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(3 * var(--cell));
+}
+@media (max-width: 1099px) {
+  .type-anatomy { grid-template-columns: 1fr; }
+}
+.type-figure {
+  margin: 0;
+}
+.type-figure-glyphs {
+  display: flex;
+  gap: var(--cell);
+  margin-bottom: calc(2 * var(--cell));
+  color: var(--ink);
+}
+.type-figure-glyphs svg {
+  display: block;
+  width: calc(9 * var(--cell));
+  height: calc(9 * var(--cell));
+  overflow: visible;
+}
+
+/* ---------- alphabet and numerals: 6 cells a character ---------- */
+.type-glyphs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, calc(6 * var(--cell)));
+  gap: calc(2 * var(--cell)) var(--cell);
+}
+.type-glyph {
+  display: block;
+  width: calc(6 * var(--cell));
+  height: calc(6 * var(--cell));
+  overflow: visible;
+}
+
+/* ---------- try it ---------- */
+.type-input {
+  display: block;
+  box-sizing: border-box;
+  width: calc(18 * var(--cell));
+  height: calc(2 * var(--cell));
+  margin-bottom: calc(3 * var(--cell));
+  padding: 0 .6em;
+  border: 1px solid color-mix(in srgb, var(--text-color) 30%, transparent);
+  border-radius: 4px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font: 600 max(.8rem, .8 * var(--cell)) Poppins, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.type-input:focus {
+  outline: none;
+  border-color: var(--link-hover-color);
+}
+.type-try {
+  touch-action: pan-y;
+}
+#type-try-word {
+  display: block;
+  height: auto;
+  overflow: visible;
+}
+
+/* ---------- the control panel (built by type.js) ---------- */
+.type-panel {
+  --muted: color-mix(in srgb, var(--text-color) 50%, transparent);
+  --line: color-mix(in srgb, var(--text-color) 10%, transparent);
+  --hover: color-mix(in srgb, var(--text-color) 6%, transparent);
+  grid-column: 2;
+  grid-row: 1 / span 5;
+  align-self: start;
+  position: sticky;
+  top: calc(4 * var(--cell));
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 6 * var(--cell));
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 10px 36px rgba(0, 0, 0, .08), 0 1px 3px rgba(0, 0, 0, .05);
+  font-size: 12px;
+  user-select: none;
+}
+.type-panel button { font-family: inherit; }
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px 10px 14px;
+}
+.panel-title { flex: 1; font-weight: 600; }
+.panel-now { color: var(--muted); }
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.icon-btn:hover { background: var(--hover); }
+.chev { transition: transform .2s; }
+.type-panel.collapsed .panel-body { display: none; }
+.type-panel.collapsed .panel-head .chev { transform: rotate(-90deg); }
+.panel-body {
+  overflow-y: auto;
+  border-top: 1px solid var(--line);
+  padding: 4px 0 8px;
+}
+.sec { border-bottom: 1px solid var(--line); }
+.sec:last-child { border-bottom: 0; }
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 14px 6px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.sec.closed .sec-body { display: none; }
+.sec.closed .chev { transform: rotate(-90deg); }
+.sec-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 2px 14px 10px;
+}
+.type-panel .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 24px;
+}
+.type-panel .row > label { flex: 0 0 64px; color: var(--muted); line-height: 1.2; }
+.seg {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--hover);
+}
+.seg button {
+  flex: 1;
+  padding: 5px 4px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  font-size: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.seg button.on {
+  background: var(--bg-color);
+  color: var(--text-color);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+}
+.type-panel .btn {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: none;
+  color: var(--text-color);
+  font-size: inherit;
+  cursor: pointer;
+}
+.type-panel .btn:hover { background: var(--hover); }
+.type-panel input[type=range] { flex: 1; min-width: 0; accent-color: var(--text-color); }
+.type-panel input[type=color] {
+  flex: 1;
+  height: 24px;
+  padding: 0 2px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+}
+.type-panel input[type=checkbox] { margin: 0; accent-color: var(--text-color); }
+.val {
+  flex: 0 0 52px;   /* room for a hex colour */
+  text-align: right;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.hint { color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+/* the scene list: click a name to play it, tick it to keep it in the loop */
+.scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 -6px;
+  padding: 3px 6px;
+  border-radius: 8px;
+}
+.scene:hover { background: var(--hover); }
+.scene .name {
+  flex: 1;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--text-color);
+  font-size: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.scene.parked .name { color: var(--muted); }
+.scene .tag { color: var(--muted); font-size: 10px; }
+.scene .bar {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+}
+.scene.on .bar { opacity: 1; }
+.scene.on .name { font-weight: 600; }
+
+/* ---------- phones: one column ---------- */
+@media (max-width: 768px) {
+  .type {
+    width: auto;
+    margin: 0 var(--gx);   /* the nav's margins, like the other pages */
+    padding-top: 72px;
+  }
+  .type-text { max-width: none; }
+  .type-layout { display: block; }
+  #type-word { width: 100% !important; }
+  .type-panel {
+    position: static;
+    max-height: none;
+    margin-top: 24px;
+  }
+  .type-section { margin-top: 48px; }
+  .type-section > .type-text { margin-bottom: 16px; }
+  .type-anatomy { gap: 32px; }
+  .type-figure-glyphs { gap: 8px; margin-bottom: 12px; }
+  .type-figure-glyphs svg { width: 96px; height: 96px; }
+  .type-glyphs {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px 12px;
+  }
+  .type-glyph { width: 100%; height: auto; aspect-ratio: 1; }
+  .type-input { width: 100%; height: 40px; margin-bottom: 20px; }
+  #type-try-word { width: 100% !important; }
+}

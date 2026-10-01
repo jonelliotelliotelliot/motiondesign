@@ -8,6 +8,7 @@
   --link-hover-color: #ffa800;
   --code-bg-color: #2d2d2d;
   --caption-bg: #fff;
+  --ink: #000000;   /* the grid type: the logo, and the type page (type/) */
 }
 
 body.dark-mode {
@@ -18,6 +19,7 @@ body.dark-mode {
   --link-color: #f0f0f0;
   --code-bg-color: #1e1e1e;
   --caption-bg: #000;
+  --ink: #f0f0f0;
 }
 
 
@@ -98,12 +100,11 @@ body {
   /* MODIFIED: Use CSS variable */
   color: var(--link-hover-color)
 }
-/* Animated JON / ELL / IOT logo (js/jonelliot-logo.js). --ink is the logo's
-   colour; the accent colours near the cursor are paletteColor2 / 3 in
-   js/grid-type.js. main.js moves #heading in here, so on desktop the
+/* Animated JON / ELL / IOT logo (js/jonelliot-logo.js). --ink (at the top)
+   is the logo's colour; the accent colours near the cursor are
+   paletteColor2 / 3 in js/grid-type.js. main.js moves #heading in here, so on desktop the
    logo sits left and the heading right, lined up with the content's edges. */
 .header {
-  --ink: #000000;
   position: relative;
   z-index: 200;
   display: flex;
@@ -117,9 +118,6 @@ body {
   touch-action: pan-y;
   overflow-x: clip;   /* scenes fling modules sideways; never widen the page */
 }
-body.dark-mode .header {
-  --ink: #f0f0f0;
-}
 .header-image {
   display: block;
   flex: none;
@@ -132,6 +130,85 @@ body.dark-mode .header {
   height: auto;
   aspect-ratio: 1;
   overflow: visible;
+}
+/* Homepage: the "about this" bubble beside the logo, made by main.js
+   (addLogoHint). Hidden until the logo is hovered, then it pops in, and the
+   little triangle rides a track round it, pointing at the cursor (main.js
+   places and turns it, with no easing, so it keeps up). --mx /
+   --my (-1 .. 1, the cursor's place over the logo) lean the bubble a hair
+   toward the cursor. Mouse only. */
+.header-image {
+  position: relative;
+}
+.logo-hint {
+  --mx: 0;
+  --my: 0;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: calc(7 * var(--cell));
+  height: calc(2.5 * var(--cell));
+  color: var(--text-color);
+  pointer-events: none;
+}
+.logo-hint-bubble {
+  position: absolute;
+  left: calc(2.6 * var(--cell));
+  top: 0;
+  padding: .3em .85em .35em;
+  border-radius: 999px;
+  background: #ececec;
+  color: #222;
+  font-size: max(.65rem, .62 * var(--cell));
+  line-height: 1.2;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  opacity: 0;
+  scale: .85;
+  transform-origin: 0 100%;
+  translate: calc(var(--mx) * 2px) calc(var(--my) * 2px);
+  transition: opacity .15s ease-out, scale .2s ease-in, translate .4s cubic-bezier(.2, .7, .2, 1);
+}
+body.dark-mode .logo-hint-bubble {
+  background: #333;
+  color: #eee;
+}
+.logo-hint-pointer {
+  position: absolute;
+  left: calc(1.9 * var(--cell));   /* until main.js puts it on the track */
+  top: calc(.4 * var(--cell));
+  rotate: -90deg;
+  width: max(9px, .5 * var(--cell));
+  height: max(9px, .5 * var(--cell));
+  overflow: visible;
+  opacity: 0;
+  scale: 0;
+  transition: opacity .15s ease-out, scale .2s ease-in;
+}
+@media (hover: hover) {
+  .header-image:hover .logo-hint-bubble {
+    opacity: 1;
+    scale: 1;
+    transition: opacity .2s ease-out .15s, scale .4s cubic-bezier(.3, 1.5, .5, 1) .15s,
+                translate .4s cubic-bezier(.2, .7, .2, 1);
+  }
+  .header-image:hover .logo-hint-pointer {
+    opacity: 1;
+    scale: 1;
+    transition: opacity .2s ease-out .25s, scale .35s cubic-bezier(.3, 1.6, .5, 1) .25s;
+  }
+  /* while it shows, the bubble (and the strip between it and the logo)
+     keeps the hover going, so it can be reached and clicked */
+  .header-image:hover .logo-hint,
+  .header-image:hover .logo-hint-bubble {
+    pointer-events: auto;
+  }
+}
+@media (hover: none), (max-width: 768px) {
+  .logo-hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-hint-bubble, .logo-hint-pointer { transition-duration: .01s !important; transition-delay: 0s !important; }
 }
 .header #heading {
   width: auto;
@@ -396,6 +473,15 @@ body.grid-on-top::after {
 
 .see-more-btn {
   color:#333 !important;
+  /* icon then words, centred on each other and in the pill */
+  display: inline-flex;
+  align-items: center;
+  gap: .35em;
+  line-height: 1;
+  padding: 5px 8px;
+}
+.see-more-btn i {
+  font-size: 1.05em;
 }
 
 /* desktop homepage: main.js moves the button after the cursor, so only its

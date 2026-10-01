@@ -1,12 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    //logo home ---
+    // The logo goes home from every page, except home itself, where it goes
+    // to the page about its typeface (type/). initializeHeader sets the href.
     document.addEventListener('click', (event) => {
-        const logoHome = event.target.closest('.header-image');
-        if (logoHome) {
+        const logoLink = event.target.closest('.header-image');
+        if (logoLink) {
             event.preventDefault();
-            window.location.href = 'index.html'; // Redirect to homepage
+            window.location.href = logoLink.href;
         }
+    });
+
+    // "back to top" in the footer. A plain href="#" would leave pages in a
+    // folder (type/, whose <base> is the site root) for the homepage.
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.footer-top')) return;
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     // --- Banner Showcase Logic ---
@@ -149,7 +158,7 @@ interactiveVideos.forEach(container => {
     // --- GLOBAL STATE AND INITIALIZATION FUNCTIONS ---
     // Bump with the ?v= on style.css / main.js in the pages, so returning
     // visitors fetch fresh copies of everything main.js loads too.
-    const ASSET_VERSION = '1.20';
+    const ASSET_VERSION = '1.21';
     // On a desktop (mouse) the homepage grid starts still: each video plays
     // while its card is hovered. The header logo keeps moving regardless.
     // Touch screens can't hover, so they keep autoplaying.
@@ -203,13 +212,75 @@ interactiveVideos.forEach(container => {
         }
     };
 
+    // Homepage: hovering the logo pops up a small "about this" bubble beside
+    // it (styles under .logo-hint in style.css), with a little rounded
+    // triangle that points at the cursor. The triangle rides an invisible
+    // track round the bubble (the bubble's pill shape, grown by TRACK cells),
+    // stopping at the spot nearest the cursor. It's part of the link, so it
+    // can be clicked too. It stays put beside the logo, out of the way of the
+    // logo's own pointer effect; only the bubble leans a hair toward the cursor.
+    const addLogoHint = (logoLink) => {
+        const TRACK = 0.45;   // gap from the bubble's edge to the track, in cells
+        const hint = document.createElement('span');
+        hint.className = 'logo-hint';
+        hint.setAttribute('aria-hidden', 'true');
+        hint.innerHTML =
+            '<span class="logo-hint-bubble">about this</span>' +
+            // a squat triangle pointing up, its corners rounded by the stroke
+            '<svg class="logo-hint-pointer" viewBox="0 0 20 20">' +
+                '<path d="M10 5 L16.5 15 L3.5 15 Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>' +
+            '</svg>';
+        logoLink.appendChild(hint);
+        if (!canHover) return;
+        const logo = logoLink.querySelector('#jonelliot-logo');
+        const bubble = hint.querySelector('.logo-hint-bubble');
+        const pointer = hint.querySelector('.logo-hint-pointer');
+        logoLink.addEventListener('pointermove', (e) => {
+            const r = logo.getBoundingClientRect();
+            const clamp = (v, a = -1, b = 1) => Math.max(a, Math.min(b, v));
+            hint.style.setProperty('--mx', clamp((e.clientX - r.left - r.width / 2) / (r.width / 2)).toFixed(3));
+            hint.style.setProperty('--my', clamp((e.clientY - r.top - r.height / 2) / (r.height / 2)).toFixed(3));
+
+            // the cursor, in the hint's own pixels (layout boxes, so the
+            // bubble's pop-in scale and lean don't move the track)
+            const h = hint.getBoundingClientRect();
+            const px = e.clientX - h.left, py = e.clientY - h.top;
+            const radius = bubble.offsetHeight / 2;
+            const cy = bubble.offsetTop + radius;
+            const x0 = bubble.offsetLeft + radius, x1 = bubble.offsetLeft + bubble.offsetWidth - radius;
+            // nearest point on the pill's centre line, then out along the
+            // line to the cursor as far as the track
+            const qx = clamp(px, x0, x1);
+            const dx = px - qx, dy = py - cy;
+            const d = Math.hypot(dx, dy) || 1;
+            const reach = radius + TRACK * (r.width / 9);
+            const tx = qx + dx / d * reach, ty = cy + dy / d * reach;
+            const size = parseFloat(getComputedStyle(pointer).width);   // an svg has no offsetWidth
+            pointer.style.left = (tx - size / 2).toFixed(1) + 'px';
+            pointer.style.top = (ty - size / 2).toFixed(1) + 'px';
+            const angle = Math.atan2(py - ty, px - tx) * 180 / Math.PI + 90;
+            pointer.style.rotate = angle.toFixed(1) + 'deg';
+        });
+        logoLink.addEventListener('pointerleave', () => {
+            hint.style.setProperty('--mx', 0);
+            hint.style.setProperty('--my', 0);
+        });
+    };
+
     // This function starts the animated logo in the header: the typeface
-    // (grid-type.js) first, then the animation that draws with it.
+    // (grid-type.js) first, then the motion engine (grid-motion.js), then the
+    // logo that runs on it.
     const initializeHeader = () => {
         if (!document.getElementById('jonelliot-logo')) return;
         // the page's heading shares the header row with the logo (see .header in style.css)
         const heading = document.getElementById('heading');
         if (heading) document.querySelector('.header').appendChild(heading);
+        if (isHomeGrid) {
+            const logoLink = document.querySelector('.header-image');
+            logoLink.href = 'type/';
+            logoLink.setAttribute('aria-label', 'jonelliot \u2014 about the type');
+            addLogoHint(logoLink);
+        }
         const loadScript = src => new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = src;
@@ -218,6 +289,7 @@ interactiveVideos.forEach(container => {
             document.body.appendChild(script);
         });
         loadScript(`js/grid-type.js?v=${ASSET_VERSION}`)
+            .then(() => loadScript(`js/grid-motion.js?v=${ASSET_VERSION}`))
             .then(() => loadScript(`js/jonelliot-logo.js?v=${ASSET_VERSION}`))
             .catch(error => console.error('Error loading header logo:', error));
     };
@@ -430,7 +502,7 @@ interactiveVideos.forEach(container => {
                     const button = document.createElement('a');
                     button.href = `${projectId}.html`;
                     button.className = 'see-more-btn';
-                    button.innerHTML = 'see more <i class="fa-regular fa-square-plus"></i>';
+                    button.innerHTML = '<i class="fa-regular fa-square-plus"></i><span>see more</span>';
 
                     // Add the button to the grid item
                     if (idTab) {

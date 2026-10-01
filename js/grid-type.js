@@ -1,7 +1,7 @@
 // grid-type.js — the grid typeface: glyph data, geometry and the SVG renderer.
-// Shared by alphabet.html (the specimen) and jonelliot.html (the animation).
-// Everything a page needs is on window.GridType; CONFIG is live, so a page can
-// change a value and redraw.
+// Shared by the header logo and the type page (type/), both through the
+// motion engine in grid-motion.js. Everything a page needs is on
+// window.GridType; CONFIG is live, so a page can change a value and redraw.
 (function () {
   "use strict";
 

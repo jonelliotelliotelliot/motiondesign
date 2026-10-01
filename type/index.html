@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!-- this page lives in a folder; every link and file below is from the site root -->
+    <base href="../">
+    <title>jonelliot - about the type</title>
+    <link rel="stylesheet" href="css/style.css?v=1.21">
+    <link rel="stylesheet" href="type/type.css?v=1.21">
+    <script src="js/head.js" defer></script>
+</head>
+<body class="type-page">
+
+    <div id="navbar-placeholder"></div>
+
+    <!-- About the typeface the logo is set in. Everything drawn here comes
+         from js/grid-type.js (the letters, numbers and colours) and
+         js/grid-motion.js (the scenes), the same files the header logo uses,
+         so a change there shows up here too. type/type.js builds the page's
+         words, figures and the control panel. -->
+    <main class="type">
+
+        <div class="type-text type-intro">
+            <h1>about the type</h1>
+            <p class="type-lede">I designed a typeface specifically for animation. Each letter is built on a 3&times;3 grid, with each cell able to move independently.</p>
+            <p>The grid gives every piece a place to return to, so the letters can break apart, wander, and snap back together. The logo at the top of each page is a small example of that system in motion.</p>
+            <p>Below are a few experiments, along with a closer look at how the letters are built.</p>
+        </div>
+
+        <div class="type-layout">
+
+            <section class="type-hero" aria-label="the jonelliot wordmark">
+                <svg id="type-word" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="jonelliot"></svg>
+                <p class="type-text type-hint">Move over the name to push its pieces around. Pick a scene in the panel to play it, or tick one to add it to the loop.</p>
+            </section>
+
+            <aside class="type-panel" id="type-panel" aria-label="animation controls"></aside>
+
+            <section class="type-section">
+                <div class="type-text">
+                    <h2>how it&rsquo;s built</h2>
+                </div>
+                <div class="type-anatomy">
+                    <figure class="type-figure">
+                        <div class="type-figure-glyphs" data-glyphs="J"></div>
+                        <figcaption class="type-text">
+                            <h3>nine cells</h3>
+                            <p>Every character is drawn on a 3&times;3 grid. A cell is either filled or empty, and a corner rounds off wherever it faces open space: a stroke end becomes a half circle, an outside corner a quarter.</p>
+                        </figcaption>
+                    </figure>
+                    <figure class="type-figure">
+                        <div class="type-figure-glyphs" data-glyphs="38"></div>
+                        <figcaption class="type-text">
+                            <h3>cuts</h3>
+                            <p>Where two cells touch but shouldn&rsquo;t join, a cut separates them. A soft cut rounds the ends it exposes and opens into a notch, as in the 3. A hard cut closed at both ends becomes a counter, as in the 8.</p>
+                        </figcaption>
+                    </figure>
+                    <figure class="type-figure">
+                        <div class="type-figure-glyphs" data-glyphs="OD"></div>
+                        <figcaption class="type-text">
+                            <h3>accent corners</h3>
+                            <p>One tighter corner, at half the usual radius, is all it takes to tell D from O and B from 8, and to give the Q its tail.</p>
+                        </figcaption>
+                    </figure>
+                    <figure class="type-figure">
+                        <div class="type-figure-glyphs" data-glyphs="KX" data-explode></div>
+                        <figcaption class="type-text">
+                            <h3>diagonals</h3>
+                            <p>K, R, V and X use one-cell-wide diagonal strokes, sliced along the grid lines so that every piece still sits inside a single cell and moves like any other.</p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="type-section">
+                <div class="type-text">
+                    <h2>alphabet</h2>
+                    <p class="type-note"><span class="hover-only">Hover over</span><span class="touch-only">Tap</span> a letter to play the scene that&rsquo;s running above.</p>
+                </div>
+                <div class="type-glyphs" data-set="ABCDEFGHIJKLMNOPQRSTUVWXYZ"></div>
+            </section>
+
+            <section class="type-section">
+                <div class="type-text">
+                    <h2>numerals</h2>
+                </div>
+                <div class="type-glyphs" data-set="0123456789"></div>
+            </section>
+
+            <section class="type-section">
+                <div class="type-text">
+                    <h2>try it</h2>
+                    <p class="type-note">Type a word, with letters and numbers, and it plays the same scenes.</p>
+                </div>
+                <input class="type-input" id="type-input" type="text" value="MOTION" maxlength="12" spellcheck="false" autocomplete="off" aria-label="your word">
+                <div class="type-try" id="type-try">
+                    <svg id="type-try-word" xmlns="http://www.w3.org/2000/svg" role="img"></svg>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+<script src="js/main.js?v=1.21"></script>
+<script src="js/grid-type.js?v=1.21"></script>
+<script src="js/grid-motion.js?v=1.21"></script>
+<script src="type/type.js?v=1.21"></script>
+
+</body>
+</html>
