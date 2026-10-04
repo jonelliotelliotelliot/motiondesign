@@ -784,116 +784,72 @@ iframe {
   .resume-page mark { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
 
-/* ABOUT (about.html) — the character in an orange circle, with the text
-   below it; on wide screens the text overlaps the circle's lower right.
-   The wide layout is set in proportions of its 1260px design, so it scales
-   down rather than slipping off screen. */
-.about {
-  width: min(700px, 80vw);
-  min-width: 320px;
-  margin: 0 auto;
-  padding: 80px 0;   /* matched top and bottom, so centring is even */
-  /* centred in the window when there's room (big monitors); otherwise it
-     starts a little way under the nav */
-  box-sizing: border-box;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.about-me {
-  position: relative;
-  padding-top: 40px;   /* clear of the nav */
-}
-.about-character {
-  aspect-ratio: 1;     /* square from the first frame, so the circle is round */
+/* ABOUT (about.html) — the résumé letter above, plus an easter egg: click
+   the wandering dot and the character pops up in an orange circle there
+   (js/about.js places and animates it). Fixed to the window; hidden until
+   then, and never printed. */
+.about-egg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3000;
+  width: min(280px, 60vw);
+  aspect-ratio: 1;
   overflow: hidden;
   background-color: var(--link-hover-color);
-  clip-path: circle(41% at 50% 50%);
+  clip-path: circle(41% at 50% 50%);   /* also where the mouse counts as over it */
+  visibility: hidden;
 }
-.about-character video {
+.about-egg video {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-/* the "about me" bubble sits at the circle's upper right, running a little
-   past its edge, and wanders a little around there (js/about.js) */
-.about-bubble {
+/* a white outline, drawn just inside the circle's edge (the clip-path would
+   cut off anything outside it) */
+.about-egg::after {
+  content: "";
   position: absolute;
-  top: calc(40px + 16%);
-  left: 66%;
-  width: min(200px, 30%);
-  height: auto;   /* not the global img/video fill */
-  z-index: 400;
-}
-.about-text {
-  position: relative;
-  z-index: 1;
-  background-color: var(--bg-color);
-}
-.about-text p {
-  margin: 0;
-  letter-spacing: normal;
-  color: var(--text-color);
-}
-.about-text .about-lede {
-  font-size: 2.4rem;
-  line-height: 2.8rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-.about-text .about-more {
-  padding-top: 20px;
-  font-size: 1.3rem;
-  line-height: 1.7rem;
-}
-.about-text .accent {
-  color: var(--link-hover-color);
-}
-.about-emojis {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  overflow: hidden;
+  inset: 9%;               /* the circle: 41% radius = 82% across */
+  border: 4px solid #fff;
+  border-radius: 50%;
   pointer-events: none;
 }
-.about-emojis .emoji {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 3rem;
-  user-select: none;
+/* the hint: a small dot in the circle's colour that wanders the window
+   (js/about.js moves it). The element is a 36px hit area, easy to catch;
+   the dot inside it pulses gently, and grows a little under the mouse. */
+.about-dot {
+  position: fixed;
+  top: -18px;              /* centred on the point js/about.js moves it to */
+  left: -18px;
+  z-index: 2999;           /* under the character */
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
 }
-@media (min-width: 1200px) {
-  .about {
-    width: min(1260px, 100vw - 64px);
-  }
-  .about-me {
-    width: 55.56%;             /* the 700px circle */
-  }
-  .about-text {
-    width: 57.14%;             /* 720px */
-    margin: -22.7% 0 0 42.86%; /* up over the circle, from 540px in */
-    padding: 10px;
-    box-sizing: border-box;
-  }
+.about-dot span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--link-hover-color);
+  animation: about-dot-pulse 2.4s ease-in-out infinite;
+  transition: scale .35s cubic-bezier(.3, 1.6, .5, 1);
 }
-@media (max-width: 768px) {
-  .about { padding-top: 24px; }
+.about-dot:hover span {
+  scale: 1.6;
 }
-@media (max-width: 420px) and (orientation: portrait) {
-  .about-text .about-lede {
-    font-size: 1.9rem;
-    line-height: 2.1rem;
-  }
-  .about-text .about-more {
-    font-size: 1rem;
-    line-height: 1.3rem;
-  }
-  .about-emojis .emoji {
-    font-size: 2rem;
-  }
+@keyframes about-dot-pulse {
+  0%, 100% { transform: scale(1); opacity: .85; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-dot span { animation: none; }
+}
+@media print {
+  .about-egg, .about-dot { display: none !important; }
 }
 
 /* FOOTER (footer.html, added to every page by main.js) — on the content's

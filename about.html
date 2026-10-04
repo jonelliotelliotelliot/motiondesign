@@ -3,43 +3,75 @@
 <head>
     <meta charset="utf-8">
     <title>jonelliot - about</title>
-    <link rel="stylesheet" href="css/style.css?v=1.22">
+    <link rel="stylesheet" href="css/style.css?v=1.27">
     <script src="js/head.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js" integrity="sha512-EZI2cBcGPnmR89wTgVnN3602Yyi7muWo8y1B3a8WmIv1J9tYG+udH4LvmYjLiGp37yHB7FfaPBo8ly178m9g4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
-<body class="about-page">
+<body class="resume-page">
 
     <div id="navbar-placeholder"></div>
+    <div id="header-placeholder"></div>
+    <div id="heading"><h1>about</h1><p>multidisciplinary designer</p></div>
 
-    <!-- Parked: emojis drifting across the whole window. To bring them back,
-         put this block back here; js/about.js and style.css still handle them.
-    <div class="about-emojis" aria-hidden="true">
-        <span class="emoji">&#9996;</span>
-        <span class="emoji">&#128190;</span>
-        <span class="emoji">&#128029;</span>
-        <span class="emoji">&#127752;</span>
-        <span class="emoji">&#128690;</span>
-        <span class="emoji">&#127875;</span>
-        <span class="emoji">&#127790;</span>
-    </div>
-    -->
+    <main class="resume">
+        <!-- printed only: on screen the nav and footer have all of this -->
+        <aside class="resume-contact print-only">
+            <dl>
+                <dt>web</dt>
+                <dd><a href="index.html">jonelliot.ca</a></dd>
+                <dt>reel</dt>
+                <dd><a href="demoreel.html">jonelliot.ca/demoreel</a></dd>
+                <dt>mail</dt>
+                <dd><a href="mailto:jonelliotelliot@gmail.com">jonelliotelliot@gmail.com</a></dd>
+                <dt>social</dt>
+                <dd><a href="https://www.instagram.com/jonelliotelliot/" target="_blank">@jonelliotelliot</a></dd>
+                <dt>linkedin</dt>
+                <dd><a href="https://www.linkedin.com/in/john-elliot-filleti-5a361168/" target="_blank">jon elliot filleti</a></dd>
+            </dl>
+        </aside>
 
-    <main class="about">
-        <div class="about-me">
-            <div class="about-character">
-                <video data-src="assets/projects/about/about-video.webm" autoplay loop muted playsinline></video>
-            </div>
-            <img class="about-bubble" src="assets/projects/about/bubble.svg" alt="">
-        </div>
+        <article class="resume-letter">
+            <p>Hello 👋</p>
 
-        <div class="about-text">
-            <p class="about-lede">Hi, I have <span class="accent">15+ years experience</span> working in advertising with a variety of skills such as: web design, html banner creation, 2D and 3D motion graphics for online videos, broadcast and social media.</p>
-            <p class="about-more">I love to experiment with new animation techniques, discover new software and apply what I've learned to daily client work, or personal work wherever I can.</p>
-        </div>
+            <p>I’m a multidisciplinary designer with <strong>more than 15 years in advertising and tech</strong>.
+            I studied traditional graphic design at the <strong>Ontario College of Art &amp; Design</strong>.</p>
+
+            <p class="resume-lede">Throughout my career I’ve built a broad skill set spanning
+            <mark>2D animation, 3D modelling</mark>, <strong>video editing</strong>, <strong>web design and coding</strong>,
+            alongside traditional design.</p>
+
+            <p>My work spans education, finance, food &amp; beverage and the arts, for brands
+            including the <strong>University of Toronto, Yellow Tail, Keurig Dr Pepper,
+            the Art Gallery of Ontario and Sheridan College</strong>.</p>
+
+            <p>Most recently I moved from agency life into fintech. At <strong>Wave</strong>,
+            I create product demo animations, video edits, landing pages and paid advertising.</p>
+
+            <h2>Skills &amp; tools</h2>
+            <ul class="resume-skills">
+                <li><strong>Figma</strong></li>
+                <li><strong>Adobe Creative Suite</strong> (Photoshop, Illustrator, InDesign)</li>
+                <li><strong>Adobe After Effects &amp; Premiere Pro</strong></li>
+                <li><strong>Blender</strong> (3D modelling, animation, rendering)</li>
+                <li><strong>HTML5/JavaScript animation</strong> (GSAP)</li>
+            </ul>
+
+            <p>I love experimenting with new animation techniques and software, and applying what I learn to client and personal work wherever I can.</p>
+
+            <p class="print-only">You’ll find my work at <a href="index.html">jonelliot.ca</a> and my
+            <a href="demoreel.html">demo reel</a> here too.</p>
+
+        </article>
     </main>
 
-<script src="js/main.js?v=1.22"></script>
-<script src="js/about.js?v=1.22"></script>
+    <!-- easter egg: click the wandering dot and the character pops up
+         there, until the mouse leaves it (js/about.js) -->
+    <div class="about-egg" aria-hidden="true">
+        <video src="assets/projects/about/about-video.webm" poster="assets/projects/about/about-video.avif" preload="metadata" loop muted playsinline></video>
+    </div>
+
+<script src="js/main.js?v=1.27"></script>
+<script src="js/about.js?v=1.27"></script>
 
 </body>
 </html>
