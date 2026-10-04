@@ -158,7 +158,7 @@ interactiveVideos.forEach(container => {
     // --- GLOBAL STATE AND INITIALIZATION FUNCTIONS ---
     // Bump with the ?v= on style.css / main.js in the pages, so returning
     // visitors fetch fresh copies of everything main.js loads too.
-    const ASSET_VERSION = '1.27';
+    const ASSET_VERSION = '1.28';
     // On a desktop (mouse) the homepage grid starts still: each video plays
     // while its card is hovered. The header logo keeps moving regardless.
     // Touch screens can't hover, so they keep autoplaying.
@@ -344,18 +344,16 @@ interactiveVideos.forEach(container => {
     };
 
 // --- NEW: Create a reusable function for the nav logic ---
+    // The same page can arrive under different addresses: "/" and
+    // "/index.html" are both home, and GitHub Pages also serves "/about" for
+    // "/about.html". Compare them in one form.
+    const samePage = (path) => path.replace(/index\.html$/, '').replace(/\.html$/, '');
     const updateActiveNav = () => {
-        const currentPagePath = window.location.pathname;
+        const currentPagePath = samePage(window.location.pathname);
         const navLinks = document.querySelectorAll('.navbar-links a');
 
         navLinks.forEach(link => {
-            // First, remove the active class from all links
-            link.classList.remove('active');
-
-            const linkPath = new URL(link.href).pathname;
-            if (linkPath === currentPagePath) {
-                link.classList.add('active');
-            }
+            link.classList.toggle('active', samePage(new URL(link.href).pathname) === currentPagePath);
         });
     };
 

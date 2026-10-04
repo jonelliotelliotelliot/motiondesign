@@ -806,13 +806,14 @@ iframe {
   height: 100%;
   object-fit: cover;
 }
-/* a white outline, drawn just inside the circle's edge (the clip-path would
-   cut off anything outside it) */
+/* an outline in the page's colour (white, or the dark grey in dark mode),
+   drawn just inside the circle's edge (the clip-path would cut off anything
+   outside it) */
 .about-egg::after {
   content: "";
   position: absolute;
   inset: 9%;               /* the circle: 41% radius = 82% across */
-  border: 4px solid #fff;
+  border: 3px solid var(--bg-color);
   border-radius: 50%;
   pointer-events: none;
 }
