@@ -698,11 +698,71 @@ iframe {
    edge; the nav and footer carry the contact details. Printed, a contact
    column (.print-only) joins it on the left. */
 .resume {
+  --side: 14;   /* cells: the experience column, left of the letter */
+  display: grid;
+  grid-template-columns: calc(var(--side) * var(--cell)) minmax(0, 1fr);
+  column-gap: calc(var(--col-gap) * var(--cell));
+  align-items: start;
   width: calc(var(--cols) * var(--cell));
   margin: calc(2 * var(--cell)) var(--gx) 0;
   font-size: .9rem;
   line-height: 1.6;
 }
+@media (max-width: 1099px) {
+  .resume {
+    --side: 13;
+    --pitch: 7;   /* small cells here, so titles wrap; room for 5 lines */
+  }
+}
+
+/* EXPERIENCE TIMELINE — newest first. Every entry is 6 cells tall (7 in
+   the narrow layout) with a
+   3x3-cell logo at its top, so each logo starts on a grid line; a 1px line
+   joins one logo's bottom to the next one's top. */
+.resume-timeline h2 {
+  height: calc(2 * var(--cell));
+  margin: 0;
+  font-size: inherit;
+  font-weight: 700;
+  line-height: 1;
+}
+.resume-timeline ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.resume-timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(3 * var(--cell)) 1fr;
+  column-gap: var(--cell);
+  height: calc(var(--pitch, 6) * var(--cell));
+  font-size: .75rem;
+  line-height: 1.35;
+}
+.resume-timeline li:last-child { height: auto; }
+.resume-timeline li + li::before {
+  --gap: 7px;   /* clear space between the line and each logo */
+  content: "";
+  position: absolute;
+  left: calc(1.5 * var(--cell) - 1px);
+  left: round(down, 1.5 * var(--cell) - 1px, 1px);   /* whole pixels keep the dots crisp */
+  bottom: calc(100% + var(--gap));
+  height: calc((var(--pitch, 6) - 3) * var(--cell) - 2 * var(--gap));
+  width: 2px;
+  background: repeating-linear-gradient(to bottom, var(--text-color) 0 2px, transparent 2px 5px);   /* dotted: 2px dots, 3px apart */
+  opacity: .5;
+}
+.resume-timeline img {
+  display: block;
+  width: calc(3 * var(--cell));
+  height: calc(3 * var(--cell));
+}
+.resume-timeline li div {
+  display: flex;
+  flex-direction: column;
+}
+.resume-timeline .resume-dates { opacity: .6; }
 .resume-contact dl {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -779,6 +839,19 @@ iframe {
     column-gap: 32px;
     font-size: 10.5pt;
   }
+  /* the timeline in fixed sizes under the contact details */
+  .resume-page .resume-timeline { margin-top: 28px; }
+  .resume-page .resume-timeline h2 { height: auto; margin-bottom: 10px; }
+  .resume-page .resume-timeline li {
+    grid-template-columns: 30px 1fr;
+    column-gap: 10px;
+    height: 54px;
+    font-size: 7.5pt;
+  }
+  .resume-page .resume-timeline li:last-child { height: auto; }
+  .resume-page .resume-timeline li + li::before { --gap: 5px; left: 14px; height: 14px; background: repeating-linear-gradient(to bottom, #000 0 2px, transparent 2px 5px); }
+  .resume-page .resume-timeline img { width: 30px; height: 30px; }
+  .resume-page .resume-timeline img { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
   .resume-page .resume-letter .resume-lede { font-size: 17pt; }
   .resume-page a { color: #000; }
   .resume-page mark { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
@@ -901,10 +974,22 @@ iframe {
 /* phones: the résumé and footer in one column (after their desktop rules,
    so these win) */
 @media (max-width: 768px) {
+  /* the timeline follows the letter, as on LinkedIn, with fixed sizes */
   .resume {
+    display: flex;
+    flex-direction: column;
     width: auto;
     margin: 0 9vw;
   }
+  .resume-side { order: 2; margin-top: 2em; }
+  .resume-timeline h2 { height: auto; margin-bottom: 1em; }
+  .resume-timeline li {
+    grid-template-columns: 48px 1fr;
+    column-gap: 14px;
+    height: 84px;
+  }
+  .resume-timeline li + li::before { left: 23px; height: 22px; }
+  .resume-timeline img { width: 48px; height: 48px; }
   .footer {
     width: auto;
     margin: calc(4 * var(--cell)) 9vw 0;

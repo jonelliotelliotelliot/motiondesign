@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>jonelliot - about me</title>
-    <link rel="stylesheet" href="css/style.css?v=1.29">
+    <link rel="stylesheet" href="css/style.css?v=1.33">
     <script src="js/head.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js" integrity="sha512-EZI2cBcGPnmR89wTgVnN3602Yyi7muWo8y1B3a8WmIv1J9tYG+udH4LvmYjLiGp37yHB7FfaPBo8ly178m9g4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
@@ -14,6 +14,7 @@
     <div id="heading"><h1>about me</h1><p>multidisciplinary designer</p></div>
 
     <main class="resume">
+        <div class="resume-side">
         <!-- printed only: on screen the nav and footer have all of this -->
         <aside class="resume-contact print-only">
             <dl>
@@ -30,10 +31,51 @@
             </dl>
         </aside>
 
+        <!-- experience, newest first; each entry is 6 cells tall with a
+             3x3-cell logo, so the logos land on the grid -->
+        <section class="resume-timeline" aria-labelledby="experience">
+            <h2 id="experience">experience</h2>
+            <ol>
+                <li>
+                    <img src="assets/projects/about/logos/colab.jpg" alt="" width="200" height="200">
+                    <div>
+                        <strong>Colab Software</strong>
+                        <span>Motion Designer</span>
+                        <span class="resume-dates">Nov 2026 – now</span>
+                    </div>
+                </li>
+                <li>
+                    <img src="assets/projects/about/logos/wave.jpg" alt="" width="100" height="100">
+                    <div>
+                        <strong>Wave</strong>
+                        <span>Senior Multimedia Designer</span>
+                        <span class="resume-dates">Sep 2024 – Oct 2026</span>
+                    </div>
+                </li>
+                <li>
+                    <img src="assets/projects/about/logos/cundari.jpg" alt="" width="100" height="100">
+                    <div>
+                        <strong>Cundari</strong>
+                        <span>Motion Designer</span>
+                        <span class="resume-dates">Jan 2005 – Sep 2024</span>
+                    </div>
+                </li>
+                <li>
+                    <img src="assets/projects/about/logos/ocad.jpg" alt="" width="200" height="200">
+                    <div>
+                        <strong>OCAD University</strong>
+                        <span>BFA, Graphic Design</span>
+                        <span class="resume-dates">2001 – 2005</span>
+                    </div>
+                </li>
+            </ol>
+        </section>
+        </div>
+
         <article class="resume-letter">
             <p>Hello 👋</p>
 
-            <p>I’m a multidisciplinary designer with <strong>more than 15 years in advertising and tech</strong>.
+            <p>I’m a multidisciplinary designer with <strong>more than 20 years in advertising and tech</strong>.
             I studied traditional graphic design at the <strong>Ontario College of Art &amp; Design</strong>.</p>
 
             <p class="resume-lede">Throughout my career I’ve built a broad skill set including
@@ -44,8 +86,9 @@
             including the <strong>University of Toronto, Yellow Tail, Keurig Dr Pepper,
             the Art Gallery of Ontario and Sheridan College</strong>.</p>
 
-            <p>Most recently I moved from agency life into fintech. At <strong>Wave</strong>,
-            I create product demo animations, video edits, landing pages and paid advertising.</p>
+            <p>My latest chapter takes me to <strong>Colab Software</strong>, where I work as
+            a Motion Designer, creating animations and visual experiences that help bring
+            software products to life.</p>
 
             <h2>Skills &amp; tools</h2>
             <ul class="resume-skills">
@@ -70,8 +113,8 @@
         <video src="assets/projects/about/about-video.webm" poster="assets/projects/about/about-video.avif" preload="metadata" loop muted playsinline></video>
     </div>
 
-<script src="js/main.js?v=1.29"></script>
-<script src="js/about.js?v=1.29"></script>
+<script src="js/main.js?v=1.33"></script>
+<script src="js/about.js?v=1.33"></script>
 
 </body>
 </html>
